@@ -7,7 +7,6 @@ import {
   Spacer,
   useBoolean,
 } from '@chakra-ui/react';
-import ParticlesBackground from '../components/particles-background';
 import Link from 'next/link';
 
 const Title = () => {
@@ -60,7 +59,6 @@ const Example = () => {
 
 const Index = () => (
   <Box as="main" w="100vw" h="100vh">
-    <ParticlesBackground />
     <Container top="15%" pos="relative" maxW="container.xl">
       <Flex>
         <Title />

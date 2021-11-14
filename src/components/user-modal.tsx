@@ -23,41 +23,50 @@ import { BiHomeAlt, BiMessageSquareDetail } from 'react-icons/bi';
 import { VscGithub } from 'react-icons/vsc';
 import { RiListSettingsLine } from 'react-icons/ri';
 import Link from 'next/link';
+import { createContext, useContext } from 'react';
 
-type User = {
-  name?: string | null;
-  email?: string | null;
-  image?: string | null;
+const UserContext = createContext(undefined);
+
+const UserIcon = ({ isLoaded }: { isLoaded: boolean }) => {
+  const user = useContext(UserContext);
+
+  return (
+    <SkeletonCircle isLoaded={isLoaded} size="24">
+      <Avatar src={user?.image} size="xl" />
+    </SkeletonCircle>
+  );
 };
 
-const UserIcon = ({ isLoaded, user }: { isLoaded: boolean; user: User }) => (
-  <SkeletonCircle isLoaded={isLoaded} size="24">
-    <Avatar src={user?.image} size="xl" />
-  </SkeletonCircle>
-);
+const UserInfo = () => {
+  const user = useContext(UserContext);
 
-const UserInfo = ({ user }: { user: User }) => (
-  <Box textAlign="center">
-    <Text>{user ? 'Signed as:' : 'Not signed'}</Text>
-    {user ? <Text>{user.name}</Text> : null}
-  </Box>
-);
+  return (
+    <Box textAlign="center">
+      <Text>{user ? 'Signed as:' : 'Not signed'}</Text>
+      {user ? <Text>{user.name}</Text> : null}
+    </Box>
+  );
+};
 
-const SignButton = ({ isSigned }: { isSigned: boolean }) => (
-  <Button
-    my="4"
-    color="white"
-    bg="#333333"
-    _active={{ transform: 'scale(0.9)' }}
-    onClick={() =>
-      isSigned
-        ? signOut({ callbackUrl: '/' })
-        : signIn('42-school', { callbackUrl: '/home' })
-    }
-  >
-    {isSigned ? 'sign out' : 'Sign in'}
-  </Button>
-);
+const SignButton = () => {
+  const user = useContext(UserContext);
+
+  return (
+    <Button
+      my="4"
+      color="white"
+      bg="#333333"
+      _active={{ transform: 'scale(0.9)' }}
+      onClick={() =>
+        user
+          ? signOut({ callbackUrl: '/' })
+          : signIn('42-school', { callbackUrl: '/home' })
+      }
+    >
+      {user ? 'sign out' : 'Sign in'}
+    </Button>
+  );
+};
 
 const Tip = ({ labels, children }) => {
   return children.map((child, index) => (
@@ -71,14 +80,13 @@ const SignBody = () => {
   const session = useSession();
   let loaded = true;
   if (session.status === 'loading') loaded = false;
-  const user = session.data?.user;
 
   return (
     <Center flexDirection="column">
-      <UserIcon isLoaded={loaded} user={user} />
+      <UserIcon isLoaded={loaded} />
       <Skeleton as={Center} flexDirection="column" isLoaded={loaded}>
-        <UserInfo user={user} />
-        <SignButton isSigned={user ? true : false} />
+        <UserInfo />
+        <SignButton />
         <HStack spacing={3}>
           <Tip labels={['home', 'Messages', 'Github repo']}>
             <Link href="/home" as="/">
@@ -100,17 +108,24 @@ const SignBody = () => {
   );
 };
 
-const ModalContainer = ({ isOpen, onClose }) => (
-  <Modal size="xs" isOpen={isOpen} onClose={onClose}>
-    <ModalOverlay />
-    <ModalContent>
-      <ModalBody>
-        <SignBody />
-      </ModalBody>
-      <ModalCloseButton />
-    </ModalContent>
-  </Modal>
-);
+const ModalContainer = ({ isOpen, onClose }) => {
+  const session = useSession();
+  const user = session.data?.user;
+
+  return (
+    <Modal size="xs" isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalBody>
+          <UserContext.Provider value={user}>
+            <SignBody />
+          </UserContext.Provider>
+        </ModalBody>
+        <ModalCloseButton />
+      </ModalContent>
+    </Modal>
+  );
+};
 
 const UserModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();

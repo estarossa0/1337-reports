@@ -57,7 +57,9 @@ const LoginButton = () => {
       mt="6"
       bg="#34495E"
     >
-      <Text pr="4px">Log in with </Text>
+      <Text pr="4px" mr={1}>
+        Log in with
+      </Text>
       <Image
         priority
         quality="25"

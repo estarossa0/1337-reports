@@ -60,6 +60,7 @@ const LoginButton = () => {
       <Text pr="4px">Log in with </Text>
       <Image
         priority
+        quality="25"
         layout="intrinsic"
         height="30px"
         width="30px"

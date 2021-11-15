@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth';
-import FortyTwoProvider from 'next-auth/providers/42';
+import NextAuth from "next-auth";
+import FortyTwoProvider from "next-auth/providers/42";
 
 export default NextAuth({
   providers: [
@@ -8,16 +8,20 @@ export default NextAuth({
       clientSecret: process.env.FORTY_TWO_CLIENT_SECRET,
       authorization: {
         params: {
-          scope: 'public projects',
+          scope: "public projects",
         },
       },
     }),
   ],
   callbacks: {
+    async signIn() {
+      return true;
+    },
     async redirect({ url, baseUrl }) {
       if (url.startsWith(baseUrl)) return url;
-      else if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+      else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
       return baseUrl;
     },
   },
+  secret: "1", //tmp
 });

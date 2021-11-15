@@ -7,11 +7,11 @@ import {
   Link as ChakraLink,
   Text,
   useBoolean,
-} from '@chakra-ui/react';
-import { getSession, signIn } from 'next-auth/react';
-import Image from 'next/image';
-import { VscGithub } from 'react-icons/vsc';
-import { GetServerSideProps } from 'next';
+} from "@chakra-ui/react";
+import { getSession, signIn } from "next-auth/react";
+import Image from "next/image";
+import { VscGithub } from "react-icons/vsc";
+import { GetServerSideProps } from "next";
 
 const Description = () => (
   <Text>
@@ -20,9 +20,9 @@ const Description = () => (
     for anything else other than verify you're one of us, and we won't link any
     report you make with your intra, unless you say so.
     <br />
-    You can always check yourself with the source code here{' '}
+    You can always check yourself with the source code here{" "}
     <ChakraLink href="https://github.com/estarossa0/1337-reports" isExternal>
-      <Icon _hover={{ cursor: 'pointer' }} boxSize="20px" as={VscGithub} />
+      <Icon _hover={{ cursor: "pointer" }} boxSize="20px" as={VscGithub} />
     </ChakraLink>
     .
   </Text>
@@ -35,8 +35,8 @@ const TextContainer = ({ children }) => (
     p="5"
     bg="#333333"
     color="white"
-    fontSize={{ base: 'xs', md: 'lg' }}
-    maxW={{ base: '200px', sm: '300px', md: 'container.md' }}
+    fontSize={{ base: "xs", md: "lg" }}
+    maxW={{ base: "200px", sm: "300px", md: "container.md" }}
   >
     {children}
   </Container>
@@ -46,12 +46,12 @@ const LoginButton = () => {
   const [loading, { on }] = useBoolean();
   return (
     <Button
-      _active={{ transform: 'scale(0.9)' }}
-      _hover={{ transform: 'scale(1.2)' }}
+      _active={{ transform: "scale(0.9)" }}
+      _hover={{ transform: "scale(1.2)" }}
       isLoading={loading}
       onClick={() => {
         on();
-        signIn('42-school', { callbackUrl: '/home' });
+        signIn("42-school", { callbackUrl: "/home" });
       }}
       color="white"
       mt="6"
@@ -88,7 +88,7 @@ const Login = () => {
 
 const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  if (session) return { redirect: { destination: '/home', permanent: true } };
+  if (session) return { redirect: { destination: "/home", permanent: true } };
   return { props: {} };
 };
 

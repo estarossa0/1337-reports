@@ -17,13 +17,13 @@ import {
   Tooltip,
   useDisclosure,
   Link as ChakraLink,
-} from '@chakra-ui/react';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { BiHomeAlt, BiMessageSquareDetail } from 'react-icons/bi';
-import { VscGithub } from 'react-icons/vsc';
-import { RiListSettingsLine } from 'react-icons/ri';
-import Link from 'next/link';
-import { createContext, useContext } from 'react';
+} from "@chakra-ui/react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { BiHomeAlt, BiMessageSquareDetail } from "react-icons/bi";
+import { VscGithub } from "react-icons/vsc";
+import { RiListSettingsLine } from "react-icons/ri";
+import Link from "next/link";
+import { createContext, useContext } from "react";
 
 const UserContext = createContext(undefined);
 
@@ -42,7 +42,7 @@ const UserInfo = () => {
 
   return (
     <Box textAlign="center">
-      <Text>{user ? 'Signed as:' : 'Not signed'}</Text>
+      <Text>{user ? "Signed as:" : "Not signed"}</Text>
       {user ? <Text>{user.name}</Text> : null}
     </Box>
   );
@@ -56,14 +56,14 @@ const SignButton = () => {
       my="4"
       color="white"
       bg="#333333"
-      _active={{ transform: 'scale(0.9)' }}
+      _active={{ transform: "scale(0.9)" }}
       onClick={() =>
         user
-          ? signOut({ callbackUrl: '/' })
-          : signIn('42-school', { callbackUrl: '/home' })
+          ? signOut({ callbackUrl: "/" })
+          : signIn("42-school", { callbackUrl: "/home" })
       }
     >
-      {user ? 'sign out' : 'Sign in'}
+      {user ? "sign out" : "Sign in"}
     </Button>
   );
 };
@@ -79,7 +79,7 @@ const Tip = ({ labels, children }) => {
 const SignBody = () => {
   const session = useSession();
   let loaded = true;
-  if (session.status === 'loading') loaded = false;
+  if (session.status === "loading") loaded = false;
 
   return (
     <Center flexDirection="column">
@@ -88,7 +88,7 @@ const SignBody = () => {
         <UserInfo />
         <SignButton />
         <HStack spacing={3}>
-          <Tip labels={['home', 'Messages', 'Github repo']}>
+          <Tip labels={["home", "Messages", "Github repo"]}>
             <Link href="/home" as="/">
               <Icon aria-label="Home page" as={BiHomeAlt} />
             </Link>

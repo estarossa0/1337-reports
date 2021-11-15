@@ -6,11 +6,6 @@ export default NextAuth({
     FortyTwoProvider({
       clientId: process.env.FORTY_TWO_CLIENT_ID,
       clientSecret: process.env.FORTY_TWO_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "public projects",
-        },
-      },
     }),
   ],
   callbacks: {

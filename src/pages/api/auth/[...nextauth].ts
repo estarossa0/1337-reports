@@ -18,5 +18,8 @@ export default NextAuth({
       return baseUrl;
     },
   },
+  pages: {
+    error: "/error",
+  },
   secret: "1", //tmp
 });

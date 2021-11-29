@@ -17,7 +17,7 @@ const SubmitForm = ({ children, ...props }) => {
     title: "",
     anonymous: true,
     staff: "",
-    description: {},
+    description: null,
   };
 
   return (
@@ -30,10 +30,9 @@ const SubmitForm = ({ children, ...props }) => {
           .required("Required"),
         staff: Yup.string().required("Required"),
       })}
-      onSubmit={(values, actions) => {
-        actions.setFieldValue("description", editor ? editor.getJSON() : null);
-        editor.commands.clearContent();
-        console.log(editor.getJSON());
+      onSubmit={(values) => {
+        if (editor && editor.isEmpty === false)
+          values.description = editor.getJSON();
       }}
       {...props}
     >

@@ -22,6 +22,9 @@ const breakpoints = createBreakpoints({
 const theme = extendTheme({
   colors: {
     black: "#16161D",
+    customBlack: {
+      500: "#16161D",
+    },
   },
   components: {
     Button: {

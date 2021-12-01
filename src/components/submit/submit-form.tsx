@@ -8,7 +8,7 @@ export interface FormValues {
   title: string;
   anonymous: boolean;
   staff: string;
-  description: Content;
+  description: Content | null;
 }
 
 const SubmitForm = ({ children, ...props }) => {

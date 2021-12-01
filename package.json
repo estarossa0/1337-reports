@@ -10,22 +10,25 @@
     "@chakra-ui/theme-tools": "1.1.2",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
+    "@prisma/client": "^3.6.0",
     "@tiptap/extension-highlight": "^2.0.0-beta.30",
     "@tiptap/extension-placeholder": "^2.0.0-beta.44",
     "@tiptap/extension-task-item": "^2.0.0-beta.28",
     "@tiptap/extension-task-list": "^2.0.0-beta.23",
     "@tiptap/react": "^2.0.0-beta.93",
     "@tiptap/starter-kit": "^2.0.0-beta.140",
+    "axios": "^0.24.0",
     "formik": "^2.2.9",
-    "yup": "^0.32.11",
-    "jotai": "^1.4.4",
     "framer-motion": "^4.0.3",
+    "jotai": "^1.4.4",
     "next": "latest",
     "next-auth": "^4.0.0-beta.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "react-tsparticles": "^1.37.3"
+    "react-query": "^3.33.7",
+    "react-tsparticles": "^1.37.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "^14.6.0",
@@ -37,6 +40,10 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "prettier": "^2.4.1",
+    "prisma": "^3.6.0",
     "typescript": "4.3.2"
+  },
+  "prisma": {
+    "schema": "./src/lib/prisma/schema.prisma"
   }
 }

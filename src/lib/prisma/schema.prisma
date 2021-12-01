@@ -1,0 +1,18 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Report {
+  id              Int     @id @default(autoincrement())
+  anonymous       Boolean
+  from            String
+  title           String
+  Description     String?
+  withDescription Boolean
+  to              String
+}

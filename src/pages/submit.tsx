@@ -3,6 +3,8 @@ import SubmitControl from "../components/submit/submit-control";
 import EditorProvider from "../components/submit/editor-provider";
 import SubmitForm from "../components/submit/submit-form";
 import SubmitBox from "../components/submit/submit-box";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 
 const Submit = () => {
   return (
@@ -23,4 +25,10 @@ const Submit = () => {
   );
 };
 
-export { Submit as default };
+const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+  if (!session) return { redirect: { destination: "/login", permanent: true } };
+  return { props: {} };
+};
+
+export { Submit as default, getServerSideProps };

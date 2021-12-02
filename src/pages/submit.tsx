@@ -27,7 +27,8 @@ const Submit = () => {
 
 const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  if (!session) return { redirect: { destination: "/login", permanent: true } };
+  if (!session)
+    return { redirect: { destination: "/login", permanent: false } };
   return { props: {} };
 };
 

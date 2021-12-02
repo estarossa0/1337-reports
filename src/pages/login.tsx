@@ -88,7 +88,7 @@ const Login = () => {
 
 const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  if (session) return { redirect: { destination: "/home", permanent: true } };
+  if (session) return { redirect: { destination: "/home", permanent: false } };
   return { props: {} };
 };
 

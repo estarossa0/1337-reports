@@ -30,9 +30,9 @@ const index = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         anonymous: data.anonymous,
         title: data.title,
         withDescription: !!data.description,
-        from: "me",
+        reporter: "me",
         Description: data.description ? JSON.stringify(data.description) : null,
-        to: data.staff,
+        staff: data.staff,
       },
     })
     .then((newReport) => res.status(200).json({ reportId: newReport.id }))

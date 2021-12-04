@@ -12,11 +12,11 @@ generator client {
 model Report {
   id              Int     @id @default(autoincrement())
   anonymous       Boolean
-  from            String
+  reporter        String
   title           String
   Description     String?
   withDescription Boolean
-  to              String
+  staff           String
 }
 
 model Account {

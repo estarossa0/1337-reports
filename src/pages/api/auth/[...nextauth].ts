@@ -1,11 +1,26 @@
 import NextAuth from "next-auth";
-import FortyTwoProvider from "next-auth/providers/42";
+import FortyTwoProvider, {
+  FortyTwoProfile,
+} from "next-auth/providers/42-school";
+import prisma from "../../../lib/prisma/client";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export default NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
-    FortyTwoProvider({
+    FortyTwoProvider<FortyTwoProfile>({
       clientId: process.env.FORTY_TWO_CLIENT_ID,
       clientSecret: process.env.FORTY_TWO_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.usual_full_name,
+          email: profile.email,
+          image: profile.image_url,
+          login: profile.login,
+          campus: profile.campus[0].name,
+        };
+      },
     }),
   ],
   callbacks: {

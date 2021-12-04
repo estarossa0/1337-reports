@@ -32,6 +32,12 @@ export default NextAuth({
       else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
       return baseUrl;
     },
+    async session({ session, user }) {
+      const { emailVerified, email, ...newUser } = user;
+
+      session.user = newUser;
+      return session;
+    },
   },
   pages: {
     error: "/error",

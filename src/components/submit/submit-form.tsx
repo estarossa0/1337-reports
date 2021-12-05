@@ -12,11 +12,13 @@ import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { secretAtom } from "../user-modal/secret-id";
 import { validate as uuidValidate } from "uuid";
+
 export interface FormValues {
   title: string;
   anonymous: boolean;
   staff: string;
   description: Content | null;
+  reporter: string | null;
 }
 interface responseData {
   reportId: number;
@@ -71,6 +73,7 @@ const SubmitForm = ({ children, ...props }) => {
   const handleSubmit = (values: FormValues) => {
     if (editor && editor.isEmpty === false)
       values.description = editor.getJSON();
+    if (values.anonymous) values.reporter = secretId;
     createReportMutation.mutate(values);
   };
 
@@ -79,6 +82,7 @@ const SubmitForm = ({ children, ...props }) => {
     anonymous: true,
     staff: "",
     description: null,
+    reporter: "",
   };
 
   return (

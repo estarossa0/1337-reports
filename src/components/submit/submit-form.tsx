@@ -10,7 +10,8 @@ import { useMutation } from "react-query";
 import { useToast } from "@chakra-ui/react";
 import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-
+import { secretAtom } from "../user-modal/secret-id";
+import { validate as uuidValidate } from "uuid";
 export interface FormValues {
   title: string;
   anonymous: boolean;
@@ -65,6 +66,7 @@ const useCreateReportMutation = () => {
 const SubmitForm = ({ children, ...props }) => {
   const editor = useContext(EditorContext);
   const createReportMutation = useCreateReportMutation();
+  const [secretId] = useAtom(secretAtom);
 
   const handleSubmit = (values: FormValues) => {
     if (editor && editor.isEmpty === false)
@@ -88,6 +90,24 @@ const SubmitForm = ({ children, ...props }) => {
           .min(5, "Must be 5 characters min")
           .required("Required"),
         staff: Yup.string().required("Required"),
+        anonymous: Yup.boolean()
+          .test(
+            "uuid",
+            "Your secret id is not set, use icon in corner to set",
+            (anonymous) => {
+              if (!anonymous) return true;
+              if (!secretId) return false;
+              return true;
+            },
+          )
+          .test(
+            "uuid valide",
+            "Your secret id is not valid, update it or generate new",
+            (anounymous) => {
+              if (!anounymous) return true;
+              return uuidValidate(secretId);
+            },
+          ),
       })}
       onSubmit={handleSubmit}
       {...props}

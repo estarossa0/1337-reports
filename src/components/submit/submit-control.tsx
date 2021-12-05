@@ -94,6 +94,7 @@ const SubmitControl = () => {
       <VStack spacing="10" m="5">
         <StaffSelect />
         <AnonymousSwitch />
+        <ErrorBox name="anonymous" />
         <SubmitButton />
       </VStack>
     </Box>

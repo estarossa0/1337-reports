@@ -188,4 +188,4 @@ const SecretIdContainer = () => {
   );
 };
 
-export { SecretIdContainer as default };
+export { SecretIdContainer as default, secretAtom };

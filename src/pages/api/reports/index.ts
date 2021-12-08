@@ -13,7 +13,7 @@ const schema = yup.object().shape({
   reporter: yup.string().nullable(),
 });
 
-const index = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   const session = await getSession({ req });
   if (!session) return res.status(401).json({ errorMessage: "Not logged in" });
   if (Date.now() > Date.parse(session.expires))
@@ -45,6 +45,11 @@ const index = async (req: NextApiRequest, res: NextApiResponse<any>) => {
       return res.status(500).json({ errorMessage: "Failed to create report." });
     });
   return response;
+};
+
+const index = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+  if (req.method === "POST") return await postHandler(req, res);
+  return res.status(405).end();
 };
 
 export default index;

@@ -5,6 +5,14 @@ import FortyTwoProvider, {
 import prisma from "../../../lib/prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
+export interface authUser {
+  id: string;
+  name: string;
+  image: string;
+  login: string;
+  campus: string;
+}
+
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [

@@ -47,8 +47,24 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   return response;
 };
 
+const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+  const session = await getSession({ req });
+
+  if (!session) return res.status(401).json({ errorMessage: "Not logged in" });
+  if (Date.now() > Date.parse(session.expires))
+    return res.status(401).json({ errorMessage: "Session expired" });
+  if (!req.query.userId || !req.query.anonymous)
+    return res.status(422).json({ errorMessage: "Request body is not valid" });
+  const reports = await prisma.report.findMany({
+    where: { reporter: req.query.userId.toString() },
+  });
+
+  return res.status(200).json(reports);
+};
+
 const index = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   if (req.method === "POST") return await postHandler(req, res);
+  if (req.method === "GET") return await getHandler(req, res);
   return res.status(405).end();
 };
 

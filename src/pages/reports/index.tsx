@@ -5,7 +5,7 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import { Box, Container, VStack, Text } from "@chakra-ui/react";
+import { Box, Container, VStack, Text, Skeleton } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
@@ -48,6 +48,15 @@ const Report = ({ report }: { report: ReportType }) => {
   );
 };
 
+const EmptyReport = () => (
+  <Box h="110px">
+    <Title title="TypeError: Cannot read properties of undefined (reading 'map') ext..." />
+    <Text fontWeight="hairline" pos="absolute" bottom="10%" fontSize="xs">
+      send to staff 3 days ago
+    </Text>
+  </Box>
+);
+
 const Index = () => {
   const session = useLoggedSession();
   const secretId = useAtomValue(secretAtom);
@@ -89,9 +98,13 @@ const Index = () => {
       rounded="lg"
     >
       <VStack>
-        {intraReports.data.map((report) => (
-          <Report report={report} />
-        ))}
+        {intraReports.isLoading
+          ? [...Array(5)].map((_, i) => (
+              <Skeleton p="10px" w="full" key={i} shadow="lg" rounded="lg">
+                <EmptyReport />
+              </Skeleton>
+            ))
+          : intraReports.data.map((report) => <Report report={report} />)}
       </VStack>
     </Container>
   );

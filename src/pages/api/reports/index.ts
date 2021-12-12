@@ -4,6 +4,7 @@ import { FormValues } from "../../../components/submit/submit-form";
 import prisma from "../../../lib/prisma/client";
 import * as yup from "yup";
 import { validate as uuidValidate } from "uuid";
+import { authUser } from "../auth/[...nextauth]";
 
 const schema = yup.object().shape({
   title: yup.string().max(70).min(5).required(),
@@ -27,7 +28,7 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   if (!valid)
     return res.status(422).json({ errorMessage: "Request body is not valid" });
 
-  const user = session.user as any;
+  const user = session.user as authUser;
 
   const response = await prisma.report
     .create({

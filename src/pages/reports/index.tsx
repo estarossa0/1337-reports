@@ -5,27 +5,45 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import { Box, Container, Text } from "@chakra-ui/react";
+import { Box, Container, VStack, Text } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks/useLoggedSession";
 import { useRouter } from "next/router";
 
+const Title = ({ title }: { title: string }) => (
+  <Text mb="40px" w="90%" fontSize="xl">
+    {title}
+  </Text>
+);
+
+const ReportInfo = ({ report }: { report: ReportType }) => (
+  <Text fontWeight="hairline" pos="absolute" bottom="10%" fontSize="xs">
+    send to{" "}
+    <Text fontWeight="semibold" as="span">
+      {report.staff}
+    </Text>{" "}
+    3 days ago
+  </Text>
+);
+
 const Report = ({ report }: { report: ReportType }) => {
   return (
     <Box
-      my="20px"
+      w="full"
       p="10px"
-      w="100%"
+      minH="110px"
       rounded="md"
-      bg="#53585c"
+      bg="white"
       border="1px solid #ADADAD"
-      color="white"
+      color="black"
+      shadow="lg"
       key={report.id}
+      pos="relative"
     >
-      <Text>{report.reporter}</Text>
-      <Text>{report.title}</Text>
+      <Title title={report.title} />
+      <ReportInfo report={report} />
     </Box>
   );
 };
@@ -60,10 +78,21 @@ const Index = () => {
     });
 
   return (
-    <Container pos="relative" zIndex="0" pt="70px">
-      {intraReports.data.map((report) => (
-        <Report report={report} />
-      ))}
+    <Container
+      shadow={{ base: "none", lg: "lg" }}
+      border={{ base: "none", lg: "2px solid #ADADAD" }}
+      bg={{ base: "none", lg: "white" }}
+      maxW="container.lg"
+      pos="relative"
+      p="30px"
+      top="40px"
+      rounded="lg"
+    >
+      <VStack>
+        {intraReports.data.map((report) => (
+          <Report report={report} />
+        ))}
+      </VStack>
     </Container>
   );
 };

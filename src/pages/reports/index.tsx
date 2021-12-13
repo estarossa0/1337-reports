@@ -71,7 +71,9 @@ const Index = () => {
                 <EmptyReport />
               </Skeleton>
             ))
-          : intraReports.data.map((report) => <Report report={report} />)}
+          : intraReports.data.map((report) => (
+              <Report key={report.id} report={report} />
+            ))}
       </VStack>
     </Container>
   );

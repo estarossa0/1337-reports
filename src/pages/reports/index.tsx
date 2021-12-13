@@ -5,12 +5,21 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import { Box, Container, VStack, Text, Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  VStack,
+  Text,
+  Skeleton,
+  LinkBox,
+  LinkOverlay,
+} from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks/useLoggedSession";
 import { useRouter } from "next/router";
+import NextLink from "next/link";
 
 const Title = ({ title }: { title: string }) => (
   <Text mb="40px" w="90%" fontSize="xl">
@@ -30,7 +39,7 @@ const ReportInfo = ({ report }: { report: ReportType }) => (
 
 const Report = ({ report }: { report: ReportType }) => {
   return (
-    <Box
+    <LinkBox
       w="full"
       p="10px"
       minH="110px"
@@ -42,9 +51,13 @@ const Report = ({ report }: { report: ReportType }) => {
       key={report.id}
       pos="relative"
     >
-      <Title title={report.title} />
-      <ReportInfo report={report} />
-    </Box>
+      <NextLink href={`/reports/${report.id}`} passHref>
+        <LinkOverlay>
+          <Title title={report.title} />
+          <ReportInfo report={report} />
+        </LinkOverlay>
+      </NextLink>
+    </LinkBox>
   );
 };
 

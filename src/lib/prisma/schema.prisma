@@ -14,7 +14,7 @@ model Report {
   anonymous       Boolean
   reporter        String
   title           String
-  Description     String?
+  description     String?
   withDescription Boolean
   staff           String
 }

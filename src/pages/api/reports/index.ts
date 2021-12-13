@@ -37,7 +37,7 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         title: data.title,
         withDescription: !!data.description,
         reporter: data.anonymous ? data.reporter : user.login,
-        Description: data.description ? JSON.stringify(data.description) : null,
+        description: data.description ? JSON.stringify(data.description) : null,
         staff: data.staff,
       },
     })

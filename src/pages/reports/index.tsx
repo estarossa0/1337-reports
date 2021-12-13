@@ -40,6 +40,8 @@ const Index = () => {
   if (session.status === "loading") return null;
 
   if (intraReports.isError || secretReports.isError) {
+    if (intraReports.error.code === "401" || secretReports.error.code === "401")
+      router.replace("/login");
     router.push("/error", {
       query: {
         error: intraReports.isError

@@ -1,6 +1,7 @@
 import NextLink from "next/link";
 import { LinkBox, LinkOverlay, Box, Text } from "@chakra-ui/react";
 import { Report as ReportType } from "@prisma/client";
+import Moment from "react-moment";
 
 const EmptyReport = () => (
   <Box h="110px">
@@ -23,7 +24,7 @@ const ReportInfo = ({ report }: { report: ReportType }) => (
     <Text fontWeight="semibold" as="span">
       {report.staff}
     </Text>{" "}
-    3 days ago, as{" "}
+    <Moment date={report.createdAt} fromNow />, as{" "}
     <Text fontWeight="semibold" as="span">
       {report.anonymous ? "anonymous" : report.reporter}
     </Text>

@@ -5,79 +5,17 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import {
-  Box,
-  Container,
-  VStack,
-  Text,
-  Skeleton,
-  LinkBox,
-  LinkOverlay,
-} from "@chakra-ui/react";
+import { Container, VStack, Skeleton } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks/useLoggedSession";
 import { useRouter } from "next/router";
-import NextLink from "next/link";
+import Report, { EmptyReport } from "../../components/reports";
 
-const Title = ({ title }: { title: string }) => (
-  <Text color="black" mb="40px" w="90%" fontSize="xl">
-    {title}
-  </Text>
-);
-
-const ReportInfo = ({ report }: { report: ReportType }) => (
-  <Text color="#57606a" pos="absolute" bottom="10%" fontSize="xs">
-    sent to{" "}
-    <Text fontWeight="semibold" as="span">
-      {report.staff}
-    </Text>{" "}
-    3 days ago, as{" "}
-    <Text fontWeight="semibold" as="span">
-      {report.anonymous ? "anonymous" : report.reporter}
-    </Text>
-  </Text>
-);
-
-const Report = ({ report }: { report: ReportType }) => {
-  return (
-    <LinkBox
-      _hover={{ transform: "scale(1.05)" }}
-      w="full"
-      p="10px"
-      minH="110px"
-      rounded="md"
-      bg="white"
-      border="1px solid #ADADAD"
-      color="black"
-      shadow="lg"
-      key={report.id}
-      pos="relative"
-    >
-      <NextLink href={`/reports/${report.id}`} passHref>
-        <LinkOverlay>
-          <Title title={report.title} />
-          <ReportInfo report={report} />
-        </LinkOverlay>
-      </NextLink>
-    </LinkBox>
-  );
-};
-
-const EmptyReport = () => (
-  <Box h="110px">
-    <Title title="TypeError: Cannot read properties of undefined (reading 'map') ext..." />
-    <Text fontWeight="hairline" pos="absolute" bottom="10%" fontSize="xs">
-      send to staff 3 days ago
-    </Text>
-  </Box>
-);
-
-const Index = () => {
+const useUserReports = () => {
   const session = useLoggedSession();
   const secretId = useAtomValue(secretAtom);
-  const router = useRouter();
   const user = session.data?.user as authUser;
 
   const intraReports = useQuery<ReportType[], AxiosError>(
@@ -91,10 +29,17 @@ const Index = () => {
     () => getReports(secretId, false),
     { enabled: !!secretId },
   );
+  return { intraReports, secretReports };
+};
+
+const Index = () => {
+  const session = useLoggedSession();
+  const router = useRouter();
+  const { intraReports, secretReports } = useUserReports();
 
   if (session.status === "loading") return null;
 
-  if (intraReports.isError || secretReports.isError)
+  if (intraReports.isError || secretReports.isError) {
     router.push("/error", {
       query: {
         error: intraReports.isError
@@ -102,6 +47,8 @@ const Index = () => {
           : secretReports.error.message,
       },
     });
+    return null;
+  }
 
   return (
     <Container
@@ -133,14 +80,11 @@ const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
 
   if (!session)
     return { redirect: { destination: "/login", permanent: false } };
-
   const user = session.user as authUser;
   const queryClient = new QueryClient();
-
   await queryClient.prefetchQuery(["reports", user.login], () =>
     getReports(user.login, false, req.headers as AxiosRequestHeaders),
   );
-
   const userId = query.userId;
   if (userId && !(userId instanceof Array))
     await queryClient.prefetchQuery(["reports", userId], () =>

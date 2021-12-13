@@ -10,13 +10,14 @@ generator client {
 }
 
 model Report {
-  id              Int     @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   anonymous       Boolean
   reporter        String
   title           String
   description     String?
   withDescription Boolean
   staff           String
+  createdAt       DateTime @default(now())
 }
 
 model Account {

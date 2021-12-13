@@ -32,12 +32,9 @@ const useUserReports = () => {
   return { intraReports, secretReports };
 };
 
-const Index = () => {
-  const session = useLoggedSession();
+const Reports = () => {
   const router = useRouter();
   const { intraReports, secretReports } = useUserReports();
-
-  if (session.status === "loading") return null;
 
   if (intraReports.isError || secretReports.isError) {
     if (intraReports.error.code === "401" || secretReports.error.code === "401")
@@ -52,6 +49,41 @@ const Index = () => {
     return null;
   }
 
+  if (intraReports.isLoading)
+    return (
+      <>
+        {[...Array(5)].map((_, i) => (
+          <Skeleton p="10px" w="full" key={i} shadow="lg" rounded="lg">
+            <EmptyReport />
+          </Skeleton>
+        ))}
+      </>
+    );
+
+  const ReportsArray: JSX.Element[] = [];
+
+  if (intraReports.isSuccess)
+    ReportsArray.push(
+      ...intraReports.data.map((report) => (
+        <Report key={report.id} report={report} />
+      )),
+    );
+
+  if (secretReports.isSuccess)
+    ReportsArray.push(
+      ...secretReports.data.map((report) => (
+        <Report key={report.id} report={report} />
+      )),
+    );
+
+  return <>{ReportsArray}</>;
+};
+
+const Index = () => {
+  const session = useLoggedSession();
+
+  if (session.status === "loading") return null;
+
   return (
     <Container
       shadow={{ base: "none", lg: "lg" }}
@@ -65,15 +97,7 @@ const Index = () => {
       minH="90vh"
     >
       <VStack>
-        {intraReports.isLoading
-          ? [...Array(5)].map((_, i) => (
-              <Skeleton p="10px" w="full" key={i} shadow="lg" rounded="lg">
-                <EmptyReport />
-              </Skeleton>
-            ))
-          : intraReports.data.map((report) => (
-              <Report key={report.id} report={report} />
-            ))}
+        <Reports />
       </VStack>
     </Container>
   );

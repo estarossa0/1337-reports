@@ -22,24 +22,28 @@ import { useRouter } from "next/router";
 import NextLink from "next/link";
 
 const Title = ({ title }: { title: string }) => (
-  <Text mb="40px" w="90%" fontSize="xl">
+  <Text color="black" mb="40px" w="90%" fontSize="xl">
     {title}
   </Text>
 );
 
 const ReportInfo = ({ report }: { report: ReportType }) => (
-  <Text fontWeight="hairline" pos="absolute" bottom="10%" fontSize="xs">
-    send to{" "}
+  <Text color="#57606a" pos="absolute" bottom="10%" fontSize="xs">
+    sent to{" "}
     <Text fontWeight="semibold" as="span">
       {report.staff}
     </Text>{" "}
-    3 days ago
+    3 days ago, as{" "}
+    <Text fontWeight="semibold" as="span">
+      {report.anonymous ? "anonymous" : report.reporter}
+    </Text>
   </Text>
 );
 
 const Report = ({ report }: { report: ReportType }) => {
   return (
     <LinkBox
+      _hover={{ transform: "scale(1.05)" }}
       w="full"
       p="10px"
       minH="110px"
@@ -109,6 +113,7 @@ const Index = () => {
       p="30px"
       top="40px"
       rounded="lg"
+      minH="90vh"
     >
       <VStack>
         {intraReports.isLoading

@@ -46,7 +46,10 @@ const Report = ({ report }: { report: ReportType }) => {
       key={report.id}
       pos="relative"
     >
-      <NextLink href={`/reports/${report.id}`} passHref>
+      <NextLink
+        href={`/reports/${report.id}?userId=${report.reporter}`}
+        passHref
+      >
         <LinkOverlay>
           <Title title={report.title} />
           <ReportInfo report={report} />

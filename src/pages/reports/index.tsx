@@ -9,7 +9,7 @@ import { Container, VStack, Skeleton } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
-import { useLoggedSession } from "../../lib/hooks/useLoggedSession";
+import { useLoggedSession } from "../../lib/hooks";
 import { useRouter } from "next/router";
 import Report, { EmptyReport } from "../../components/reports";
 

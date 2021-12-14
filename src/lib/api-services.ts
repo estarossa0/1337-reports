@@ -20,4 +20,18 @@ const getReports = (
     .then(({ data }) => data);
 };
 
-export { createReport, getReports };
+const getReport = (
+  reportId: string,
+  userId: string,
+  headers?: AxiosRequestHeaders,
+) => {
+  return axios
+    .get(`/api/reports/${reportId}`, {
+      baseURL: process.env.BASE_URL,
+      params: { userId },
+      headers: headers || {},
+    })
+    .then(({ data }) => data);
+};
+
+export { createReport, getReports, getReport };

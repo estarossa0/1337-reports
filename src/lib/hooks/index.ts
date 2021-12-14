@@ -8,13 +8,19 @@ import { Content } from "@tiptap/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-const useEditorWithExtensions = (content: Content, editable: boolean) =>
+const useEditorWithExtensions = (
+  content: Content,
+  editable: boolean,
+  placeHolder?: string,
+) =>
   useEditor({
     editable: editable,
     content: content,
     extensions: [
       StarterKit,
-      Placeholder.configure({ placeholder: "Description (optional)" }),
+      Placeholder.configure({
+        placeholder: placeHolder || "Description (optional)",
+      }),
       Highlight,
       TaskList,
       TaskItem.configure({

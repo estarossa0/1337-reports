@@ -9,7 +9,7 @@ import { Box, Container } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import Title from "../../components/report/title";
 import ReportDescription from "../../components/report/description";
-import Comment from "../../components/report/comment";
+import Comments from "../../components/report/comment";
 
 const Report = ({
   reportId,
@@ -37,7 +37,7 @@ const Report = ({
       <Title report={data} />
       <Box h="2px" w="full" bg="#CCCCCC" />
       <ReportDescription report={data} />
-      <Comment comments={data.comment} />
+      <Comments comments={data.comment} />
     </Container>
   );
 };

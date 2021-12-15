@@ -37,7 +37,7 @@ const Report = ({
       <Title report={data} />
       <Box h="2px" w="full" bg="#CCCCCC" />
       <ReportDescription report={data} />
-      <Comments comments={data.comment} />
+      <Comments reportId={reportId} comments={data.comment} />
     </Container>
   );
 };

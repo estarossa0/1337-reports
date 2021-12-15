@@ -7,7 +7,13 @@ const createReport = (value: FormValues) => {
   return axios.post("/api/reports/", value);
 };
 
-const createComment = (reportId: string, body: Content) => {
+const createComment = ({
+  reportId,
+  body,
+}: {
+  reportId: string;
+  body: Content;
+}) => {
   return axios
     .post(`/api/reports/${reportId}`, { body })
     .then(({ data }) => data);

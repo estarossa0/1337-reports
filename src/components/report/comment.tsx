@@ -2,8 +2,25 @@ import { Box, Button, Center, Flex } from "@chakra-ui/react";
 import { Editor, EditorContent } from "@tiptap/react";
 import { useEditorWithExtensions } from "../../lib/hooks";
 import { Comment as CommentType } from "@prisma/client";
+import { useMutation, useQueryClient } from "react-query";
+import { createComment } from "../../lib/api-services";
 
-const CommentBox = ({ editor }: { editor: Editor }) => {
+const CommentBox = ({
+  reportId,
+  editor,
+}: {
+  reportId: string;
+  editor: Editor;
+}) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(createComment, {
+    mutationKey: ["report", reportId],
+    onSuccess: () => {
+      editor.commands.clearContent();
+    },
+    onSettled: () => queryClient.invalidateQueries(["report", reportId]),
+  });
+
   return (
     <Box
       bg="white"
@@ -35,6 +52,10 @@ const CommentBox = ({ editor }: { editor: Editor }) => {
       </Center>
       <Flex w="95%" justify="flex-end">
         <Button
+          onClick={() => {
+            mutation.mutate({ reportId: reportId, body: editor.getJSON() });
+          }}
+          isLoading={mutation.isLoading}
           h={{ base: "30px", md: "40px" }}
           w={{ base: "80px", md: "100px" }}
           fontSize={{ base: "sm", md: "md" }}
@@ -52,14 +73,20 @@ const CommentBox = ({ editor }: { editor: Editor }) => {
   );
 };
 
-const Comments = ({ comments }: { comments: CommentType[] }) => {
+const Comments = ({
+  reportId,
+  comments,
+}: {
+  reportId: string;
+  comments: CommentType[];
+}) => {
   const editor = useEditorWithExtensions("", true, "Leave a comment");
 
   if (!editor) return null;
 
   return (
     <>
-      <CommentBox editor={editor} />
+      <CommentBox reportId={reportId} editor={editor} />
     </>
   );
 };

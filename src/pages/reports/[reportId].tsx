@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import Moment from "react-moment";
 import { Editor, EditorContent } from "@tiptap/react";
+import { useQuery } from "react-query";
 
 const Title = ({ report }: { report: ReportType }) => (
   <>
@@ -137,10 +138,20 @@ const Comment = () => {
   );
 };
 
-const Report = ({ report }: { reportId: string; report: ReportType }) => {
+const Report = ({
+  reportId,
+  report,
+}: {
+  reportId: string;
+  report: ReportType;
+}) => {
   const session = useLoggedSession();
-
-  if (session.status === "loading") return null;
+  const { data, isLoading, isError } = useQuery<ReportType>(
+    ["report", reportId],
+    () => getReport(reportId, report.reporter),
+    { initialData: report },
+  );
+  if (session.status === "loading" || isLoading || isError) return null;
 
   return (
     <Container
@@ -150,9 +161,9 @@ const Report = ({ report }: { reportId: string; report: ReportType }) => {
       rounded="lg"
       minH="90vh"
     >
-      <Title report={report} />
+      <Title report={data} />
       <Box h="2px" w="full" bg="#CCCCCC" />
-      <ReportDescription report={report} />
+      <ReportDescription report={data} />
       <Comment />
     </Container>
   );

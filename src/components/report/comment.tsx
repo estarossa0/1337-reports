@@ -33,6 +33,7 @@ const CommentBox = ({
     >
       <Center>
         <Box
+          onClick={() => editor.commands.focus()}
           p="0.4"
           shadow="sm"
           border={editor.isFocused ? "1px solid #0969da" : "1px solid #d0d7de"}

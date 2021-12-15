@@ -1,6 +1,7 @@
 import { Box, Button, Center, Flex } from "@chakra-ui/react";
 import { Editor, EditorContent } from "@tiptap/react";
 import { useEditorWithExtensions } from "../../lib/hooks";
+import { Comment as CommentType } from "@prisma/client";
 
 const CommentBox = ({ editor }: { editor: Editor }) => (
   <>
@@ -41,7 +42,7 @@ const CommentBox = ({ editor }: { editor: Editor }) => (
   </>
 );
 
-const Comment = () => {
+const Comment = ({ comments }: { comments: CommentType[] }) => {
   const editor = useEditorWithExtensions("", true, "Leave a comment");
 
   if (!editor) return null;

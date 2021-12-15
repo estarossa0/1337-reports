@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { getReport } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
-import { Report as ReportType } from "@prisma/client";
+import { ReportWithComments } from "../../lib/prisma/client";
 import { useLoggedSession } from "../../lib/hooks";
 import { Box, Container } from "@chakra-ui/react";
 import { useQuery } from "react-query";
@@ -16,10 +16,10 @@ const Report = ({
   report,
 }: {
   reportId: string;
-  report: ReportType;
+  report: ReportWithComments;
 }) => {
   const session = useLoggedSession();
-  const { data, isLoading, isError } = useQuery<ReportType>(
+  const { data, isLoading, isError } = useQuery<ReportWithComments>(
     ["report", reportId],
     () => getReport(reportId, report.reporter),
     { initialData: report },
@@ -37,7 +37,7 @@ const Report = ({
       <Title report={data} />
       <Box h="2px" w="full" bg="#CCCCCC" />
       <ReportDescription report={data} />
-      <Comment />
+      <Comment comments={data.comment} />
     </Container>
   );
 };

@@ -1,8 +1,8 @@
 import { Heading, Text } from "@chakra-ui/react";
 import Moment from "react-moment";
-import { Report as ReportType } from "@prisma/client";
+import { ReportWithComments } from "../../lib/prisma/client";
 
-const Title = ({ report }: { report: ReportType }) => (
+const Title = ({ report }: { report: ReportWithComments }) => (
   <>
     <Heading ml="10px" fontSize={{ base: "md", md: "lg", lg: "x-large" }}>
       {report.title}

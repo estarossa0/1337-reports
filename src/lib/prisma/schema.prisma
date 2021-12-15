@@ -10,14 +10,23 @@ generator client {
 }
 
 model Report {
-  id              Int      @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   anonymous       Boolean
   reporter        String
   title           String
   description     String?
   withDescription Boolean
   staff           String
-  createdAt       DateTime @default(now())
+  createdAt       DateTime  @default(now())
+  comment         Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  body      String
+  reportId  Int
+  report    Report   @relation(fields: [reportId], references: [id])
 }
 
 model Account {

@@ -1,9 +1,16 @@
 import axios from "axios";
 import { FormValues } from "../components/submit/submit-form";
 import { AxiosRequestHeaders } from "axios";
+import { Content } from "@tiptap/core";
 
 const createReport = (value: FormValues) => {
   return axios.post("/api/reports/", value);
+};
+
+const createComment = (reportId: string, body: Content) => {
+  return axios
+    .post(`/api/reports/${reportId}`, { body })
+    .then(({ data }) => data);
 };
 
 const getReports = (
@@ -34,4 +41,4 @@ const getReport = (
     .then(({ data }) => data);
 };
 
-export { createReport, getReports, getReport };
+export { createReport, getReports, getReport, createComment };

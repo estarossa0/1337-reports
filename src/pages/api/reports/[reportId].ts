@@ -28,6 +28,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   const report = await prisma.report.findUnique({
     where: { id: parseInt(reportId) },
+    include: { comment: true },
   });
 
   if (!report || report.reporter !== userId)

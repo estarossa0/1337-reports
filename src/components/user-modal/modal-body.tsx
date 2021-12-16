@@ -81,11 +81,11 @@ const SignBody = () => {
         <SecretIdContainer />
         <SignButton />
         <HStack spacing={3}>
-          <Tip labels={["home", "Messages", "Github repo"]}>
+          <Tip labels={["home", "reports", "Github repo"]}>
             <Link href="/home" as="/">
               <Icon aria-label="Home page" as={BiHomeAlt} />
             </Link>
-            <Link href="/messages" as="/">
+            <Link href="/reports" as="/">
               <Icon as={BiMessageSquareDetail} />
             </Link>
             <ChakraLink

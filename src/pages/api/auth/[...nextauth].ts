@@ -4,6 +4,7 @@ import FortyTwoProvider, {
 } from "next-auth/providers/42-school";
 import prisma from "../../../lib/prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import staffLogins from "../../../lib/staffLogins";
 
 export interface authUser {
   id: string;
@@ -32,8 +33,22 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async signIn() {
-      return true;
+    async signIn({ profile: profileWithNoType }) {
+      const profile: FortyTwoProfile = profileWithNoType as any;
+
+      const isStaff = staffLogins.some(
+        (staffLogin) => profile.login === staffLogin,
+      );
+
+      if (isStaff) return true;
+
+      const fromBgOrKH = profile.campus.some(
+        (campus) => campus.id === 16 || campus.id === 21,
+      );
+
+      if (fromBgOrKH) return true;
+
+      return false;
     },
     async redirect({ url, baseUrl }) {
       if (url.startsWith(baseUrl)) return url;

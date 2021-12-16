@@ -10,12 +10,14 @@ const createReport = (value: FormValues) => {
 const createComment = ({
   reportId,
   body,
+  author,
 }: {
   reportId: string;
   body: Content;
+  author: string;
 }) => {
   return axios
-    .post(`/api/reports/${reportId}`, { body })
+    .post(`/api/reports/${reportId}`, { body, author })
     .then(({ data }) => data);
 };
 

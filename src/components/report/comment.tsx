@@ -4,6 +4,7 @@ import { useEditorWithExtensions } from "../../lib/hooks";
 import { Comment as CommentType } from "@prisma/client";
 import { useMutation, useQueryClient } from "react-query";
 import { createComment } from "../../lib/api-services";
+import { ReportWithComments } from "../../lib/prisma/client";
 
 const CommentBox = ({
   reportId,
@@ -20,6 +21,10 @@ const CommentBox = ({
     },
     onSettled: () => queryClient.invalidateQueries(["report", reportId]),
   });
+  const report = queryClient.getQueryData<ReportWithComments>([
+    "report",
+    reportId,
+  ]);
 
   return (
     <Box
@@ -54,7 +59,11 @@ const CommentBox = ({
       <Flex w="95%" justify="flex-end">
         <Button
           onClick={() => {
-            mutation.mutate({ reportId: reportId, body: editor.getJSON() });
+            mutation.mutate({
+              reportId: reportId,
+              body: editor.getJSON(),
+              author: report.anonymous ? "anonymous" : report.reporter,
+            });
           }}
           isLoading={mutation.isLoading}
           h={{ base: "30px", md: "40px" }}

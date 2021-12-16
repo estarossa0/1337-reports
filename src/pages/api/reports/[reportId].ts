@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 const schema = yup.object().shape({
   body: yup.object().required(),
+  author: yup.string().required().max(12),
 });
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
@@ -30,7 +31,6 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
     where: { id: parseInt(reportId) },
     include: { comment: true },
   });
-
   if (!report || report.reporter !== userId)
     return res.status(404).json({ errorMessage: "Not found" });
 
@@ -56,6 +56,7 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   const addedComment = await prisma.comment.create({
     data: {
+      author: data.author,
       body: JSON.stringify(data.body),
       report: { connect: { id: id } },
     },

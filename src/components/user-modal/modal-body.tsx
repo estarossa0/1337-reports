@@ -52,7 +52,7 @@ const SignButton = () => {
       onClick={() =>
         user
           ? signOut({ callbackUrl: "/" })
-          : signIn("42-school", { callbackUrl: "/home" })
+          : signIn("42-school", { callbackUrl: "/reports" })
       }
     >
       {user ? "sign out" : "Sign in"}

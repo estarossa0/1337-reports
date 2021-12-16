@@ -51,7 +51,7 @@ const LoginButton = () => {
       isLoading={loading}
       onClick={() => {
         on();
-        signIn("42-school", { callbackUrl: "/home" });
+        signIn("42-school", { callbackUrl: "/submit" });
       }}
       color="white"
       mt="6"
@@ -88,7 +88,8 @@ const Login = () => {
 
 const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  if (session) return { redirect: { destination: "/home", permanent: false } };
+  if (session)
+    return { redirect: { destination: "/reports", permanent: false } };
   return { props: {} };
 };
 

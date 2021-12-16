@@ -31,7 +31,7 @@ const Title = () => {
         </Text>
         .
       </Text>
-      <Link href="/login">
+      <Link href="/submit">
         <Button
           onClick={() => on()}
           _active={{ transform: "scale(0.9)" }}

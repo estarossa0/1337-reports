@@ -82,7 +82,7 @@ const SignBody = () => {
         <SignButton />
         <HStack spacing={3}>
           <Tip labels={["home", "reports", "Github repo"]}>
-            <Link href="/home" as="/">
+            <Link href="/">
               <Icon aria-label="Home page" as={BiHomeAlt} />
             </Link>
             <Link href="/reports" as="/">

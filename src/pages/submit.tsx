@@ -5,6 +5,7 @@ import SubmitForm from "../components/submit/submit-form";
 import SubmitBox from "../components/submit/submit-box";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import { authUser } from "./api/auth/[...nextauth]";
 
 const Submit = () => {
   return (
@@ -29,6 +30,9 @@ const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
   if (!session)
     return { redirect: { destination: "/login", permanent: false } };
+  const user = session.user as authUser;
+  if (user.isStaff)
+    return { redirect: { destination: "/reports", permanent: true } };
   return { props: {} };
 };
 

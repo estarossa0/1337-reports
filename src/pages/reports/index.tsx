@@ -135,7 +135,7 @@ const Index = () => {
       maxW="container.lg"
       pos="relative"
       p="30px"
-      top="40px"
+      top="90px"
       rounded="lg"
       minH="90vh"
     >

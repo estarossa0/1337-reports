@@ -30,17 +30,25 @@ const useCreateReportMutation = () => {
     duration: 9000,
     isClosable: true,
   });
+  const [secretId] = useAtom(secretAtom);
 
   let redirectPage: string;
 
-  const mutationSuccessHandler = (response: AxiosResponse<responseData>) => {
+  const mutationSuccessHandler = (
+    response: AxiosResponse<responseData>,
+    report: FormValues,
+  ) => {
     toast({
       status: "success",
       description: "Redirecting you the report page",
       title: "Created",
     });
     setContent({});
-    router.push(`/reports/${response.data.reportId}`);
+    router.push(
+      `/reports/${response.data.reportId}/${
+        report.anonymous ? `?userId=${secretId}` : ""
+      }`,
+    );
   };
 
   const mutationErrorHandler = (error: AxiosError) => {

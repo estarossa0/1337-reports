@@ -31,7 +31,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
     where: { id: parseInt(reportId) },
     include: { comment: true },
   });
-  if (!report || report.reporter !== userId)
+  if (!report || (report.reporter !== userId && report.staff !== userId))
     return res.status(404).json({ errorMessage: "Not found" });
 
   return res.status(200).json(report);

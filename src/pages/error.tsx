@@ -37,8 +37,8 @@ const AccessDeniedError = () => (
     <Text as="span" fontWeight="bold">
       Access denied
     </Text>
-    , you're NOT authorized to use this service, made only for 1337 khouribga
-    students. Consider forking..
+    , you're NOT authorized to use this service, made only for 1337
+    khouribga/benguerir students. Consider forking..
   </Text>
 );
 

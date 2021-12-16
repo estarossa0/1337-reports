@@ -10,6 +10,7 @@ import {
 import { Field, useFormikContext } from "formik";
 import ErrorBox from "./submit-error";
 import { FormValues } from "./submit-form";
+import staffLogins from "../../lib/staffLogins";
 
 const StaffSelect = () => {
   return (
@@ -28,7 +29,11 @@ const StaffSelect = () => {
           width="fit-content"
           name="staff"
         >
-          <option value="staff">staff</option>
+          {staffLogins.map((staff) => (
+            <option key={staff} value={staff}>
+              {staff}
+            </option>
+          ))}
         </Field>
       </Flex>
       <ErrorBox name="staff" />

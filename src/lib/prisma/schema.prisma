@@ -27,7 +27,7 @@ model Comment {
   body      String
   reportId  Int
   author    String
-  report    Report   @relation(fields: [reportId], references: [id])
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -68,6 +68,7 @@ model User {
   image         String?
   login         String?
   campus        String?
+  isStaff       Boolean?
   accounts      Account[]
   sessions      Session[]
 }

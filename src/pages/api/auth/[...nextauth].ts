@@ -12,6 +12,7 @@ export interface authUser {
   image: string;
   login: string;
   campus: string;
+  isStaff: boolean;
 }
 
 export default NextAuth({
@@ -28,6 +29,7 @@ export default NextAuth({
           image: profile.image_url,
           login: profile.login,
           campus: profile.campus[0].name,
+          isStaff: profile["staff?"],
         };
       },
     }),

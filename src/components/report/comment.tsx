@@ -66,7 +66,8 @@ const CommentBox = ({
             mutation.mutate({
               reportId: reportId,
               body: editor.getJSON(),
-              author: report.anonymous ? "anonymous" : report.reporter,
+              author:
+                report.anonymous && !user.isStaff ? "anonymous" : user.login,
               byStaff: user.isStaff,
             });
           }}

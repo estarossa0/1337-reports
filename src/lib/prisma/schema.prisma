@@ -27,6 +27,7 @@ model Comment {
   body      String
   reportId  Int
   author    String
+  byStaff   Boolean
   report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
 }
 

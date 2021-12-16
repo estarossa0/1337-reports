@@ -11,13 +11,15 @@ const createComment = ({
   reportId,
   body,
   author,
+  byStaff,
 }: {
   reportId: string;
   body: Content;
   author: string;
+  byStaff: boolean;
 }) => {
   return axios
-    .post(`/api/reports/${reportId}`, { body, author })
+    .post(`/api/reports/${reportId}`, { body, author, byStaff })
     .then(({ data }) => data);
 };
 

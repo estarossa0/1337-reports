@@ -6,6 +6,7 @@ import * as yup from "yup";
 const schema = yup.object().shape({
   body: yup.object().required(),
   author: yup.string().required().max(12),
+  byStaff: yup.boolean().required(),
 });
 
 const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
@@ -59,6 +60,7 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
       author: data.author,
       body: JSON.stringify(data.body),
       report: { connect: { id: id } },
+      byStaff: data.byStaff,
     },
   });
 

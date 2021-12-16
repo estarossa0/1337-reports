@@ -26,6 +26,9 @@ const CommentBox = ({
     "report",
     reportId,
   ]);
+  const session = useSession();
+  if (session.status !== "authenticated") return null;
+  const user = session.data.user as authUser;
 
   return (
     <Box
@@ -64,6 +67,7 @@ const CommentBox = ({
               reportId: reportId,
               body: editor.getJSON(),
               author: report.anonymous ? "anonymous" : report.reporter,
+              byStaff: user.isStaff,
             });
           }}
           isLoading={mutation.isLoading}

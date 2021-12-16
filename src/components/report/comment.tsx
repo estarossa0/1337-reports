@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from "react-query";
 import { createComment } from "../../lib/api-services";
 import { ReportWithComments } from "../../lib/prisma/client";
 import Moment from "react-moment";
+import { useSession } from "next-auth/react";
+import { authUser } from "../../pages/api/auth/[...nextauth]";
 
 const CommentBox = ({
   reportId,
@@ -89,6 +91,42 @@ const CommentBox = ({
   );
 };
 
+const CommentItemHeader = ({ comment }: { comment: CommentType }) => {
+  const session = useSession();
+  if (session.status !== "authenticated") return null;
+  const user = session.data.user as authUser;
+
+  return (
+    <Box
+      borderTopRadius="4px"
+      h="40px"
+      borderBottom="1px solid #d0d7de"
+      bg={
+        (comment.byStaff && user.isStaff) || (!comment.byStaff && !user.isStaff)
+          ? "#dcf4ff"
+          : "#f7f8fa"
+      }
+      color="white"
+      w="full"
+    >
+      <Text size="md" color="#57606a" p="8px">
+        <Text
+          as="span"
+          color="black"
+          textTransform="capitalize"
+          fontWeight="bold"
+        >
+          {comment.author}
+        </Text>
+        <Text as="span">
+          {" "}
+          commented <Moment date={comment.createdAt} fromNow />
+        </Text>
+      </Text>
+    </Box>
+  );
+};
+
 const CommentItem = ({ comment }: { comment: CommentType }) => {
   const editor = useEditorWithExtensions(JSON.parse(comment.body), false);
 
@@ -103,22 +141,7 @@ const CommentItem = ({ comment }: { comment: CommentType }) => {
         rounded="md"
         bg="white"
       >
-        <Box borderTopRadius="4px" h="40px" bg="#dcf4ff" color="white" w="full">
-          <Text size="md" color="#57606a" p="8px">
-            <Text
-              as="span"
-              color="black"
-              textTransform="capitalize"
-              fontWeight="bold"
-            >
-              {comment.author}
-            </Text>
-            <Text as="span">
-              {" "}
-              commented <Moment date={comment.createdAt} fromNow />
-            </Text>
-          </Text>
-        </Box>
+        <CommentItemHeader comment={comment} />
         <Box>
           <EditorContent editor={editor} />
         </Box>

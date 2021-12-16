@@ -32,7 +32,7 @@ const useUserReports = () => {
   return { intraReports, secretReports };
 };
 
-const Reports = () => {
+const StudentRports = () => {
   const router = useRouter();
   const { intraReports, secretReports } = useUserReports();
 
@@ -79,6 +79,51 @@ const Reports = () => {
   return <>{ReportsArray}</>;
 };
 
+const StaffReports = () => {
+  const session = useLoggedSession();
+  const user = session.data?.user as authUser;
+  const router = useRouter();
+  const reports = useQuery<ReportType[], AxiosError>(
+    ["reports", user?.login],
+    () => getReports(user?.login, false, {}, true),
+    { enabled: !!user },
+  );
+
+  if (reports.isError) {
+    if (reports.error.code === "401") router.replace("/login");
+    router.push("/error", {
+      query: {
+        error: reports.error.message,
+      },
+    });
+    return null;
+  }
+
+  if (reports.isLoading)
+    return (
+      <>
+        {[...Array(5)].map((_, i) => (
+          <Skeleton p="10px" w="full" key={i} shadow="lg" rounded="lg">
+            <EmptyReport />
+          </Skeleton>
+        ))}
+      </>
+    );
+
+  return (
+    <>
+      {reports.data.map((report) => (
+        <Report key={report.id} report={report} />
+      ))}
+    </>
+  );
+};
+
+const Reports = ({ user }: { user: authUser }) => {
+  if (user.isStaff) return <StaffReports />;
+  return <StudentRports />;
+};
+
 const Index = () => {
   const session = useLoggedSession();
 
@@ -97,7 +142,7 @@ const Index = () => {
       minH="90vh"
     >
       <VStack>
-        <Reports />
+        <Reports user={session.data.user as authUser} />
       </VStack>
     </Container>
   );

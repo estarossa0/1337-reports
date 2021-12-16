@@ -2,6 +2,8 @@ import NextLink from "next/link";
 import { LinkBox, LinkOverlay, Box, Text } from "@chakra-ui/react";
 import { Report as ReportType } from "@prisma/client";
 import Moment from "react-moment";
+import { useSession } from "next-auth/react";
+import { authUser } from "../../pages/api/auth/[...nextauth]";
 
 const EmptyReport = () => (
   <Box h="110px">
@@ -18,18 +20,36 @@ const Title = ({ title }: { title: string }) => (
   </Text>
 );
 
-const ReportInfo = ({ report }: { report: ReportType }) => (
-  <Text color="#57606a" pos="absolute" bottom="10%" fontSize="xs">
-    sent to{" "}
-    <Text fontWeight="semibold" as="span">
-      {report.staff}
-    </Text>{" "}
-    <Moment date={report.createdAt} fromNow />, as{" "}
-    <Text fontWeight="semibold" as="span">
-      {report.anonymous ? "anonymous" : report.reporter}
+const ReportInfo = ({ report }: { report: ReportType }) => {
+  const session = useSession();
+
+  if (session.status !== "authenticated") return null;
+  const user = session.data.user as authUser;
+
+  if (user.isStaff)
+    return (
+      <Text color="#57606a" pos="absolute" bottom="10%" fontSize="xs">
+        sent from{" "}
+        <Text fontWeight="semibold" as="span">
+          {report.anonymous ? "anonymous" : report.reporter}
+        </Text>{" "}
+        <Moment date={report.createdAt} fromNow />
+      </Text>
+    );
+
+  return (
+    <Text color="#57606a" pos="absolute" bottom="10%" fontSize="xs">
+      sent to{" "}
+      <Text fontWeight="semibold" as="span">
+        {report.staff}
+      </Text>{" "}
+      <Moment date={report.createdAt} fromNow />, as{" "}
+      <Text fontWeight="semibold" as="span">
+        {report.anonymous ? "anonymous" : report.reporter}
+      </Text>
     </Text>
-  </Text>
-);
+  );
+};
 
 const Report = ({ report }: { report: ReportType }) => {
   return (

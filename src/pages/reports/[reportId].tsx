@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import Title from "../../components/report/title";
 import ReportDescription from "../../components/report/description";
 import Comments from "../../components/report/comment";
+import { validate as uuidValidate } from "uuid";
 
 const Report = ({
   reportId,
@@ -56,7 +57,7 @@ const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
     req.headers as AxiosRequestHeaders,
   ).catch(() => null);
 
-  if (!report && query.userId)
+  if (!report && query.userId && uuidValidate(query.userId))
     report = await getReport(
       reportId,
       query.userId.toString(),

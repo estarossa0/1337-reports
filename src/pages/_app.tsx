@@ -8,6 +8,7 @@ import "../styles/Submit.css";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import router from "next/router";
 import { AxiosError } from "axios";
+import SubmitButton from "../components/submitButton";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Hydrate state={pageProps.dehydratedState}>
             <ParticlesBackground />
             <UserModal />
+            <SubmitButton />
             <Component {...pageProps} />
           </Hydrate>
         </QueryClientProvider>

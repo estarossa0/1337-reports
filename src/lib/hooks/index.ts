@@ -6,7 +6,7 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Content } from "@tiptap/core";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import router from "next/router";
 
 const useEditorWithExtensions = (
   content: Content,
@@ -31,7 +31,6 @@ const useEditorWithExtensions = (
 
 const useLoggedSession = () => {
   const session = useSession();
-  const router = useRouter();
 
   if (session.status === "unauthenticated") router.push("/login");
   return session;

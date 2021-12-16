@@ -10,7 +10,7 @@ import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks";
-import { useRouter } from "next/router";
+import router from "next/router";
 import Report, { EmptyReport } from "../../components/reports";
 
 const useUserReports = () => {
@@ -33,7 +33,6 @@ const useUserReports = () => {
 };
 
 const StudentRports = () => {
-  const router = useRouter();
   const { intraReports, secretReports } = useUserReports();
 
   if (intraReports.isError || secretReports.isError) {
@@ -82,7 +81,6 @@ const StudentRports = () => {
 const StaffReports = () => {
   const session = useLoggedSession();
   const user = session.data?.user as authUser;
-  const router = useRouter();
   const reports = useQuery<ReportType[], AxiosError>(
     ["reports", user?.login],
     () => getReports(user?.login, false, {}, true),

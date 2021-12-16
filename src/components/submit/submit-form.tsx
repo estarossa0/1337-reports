@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { useMutation } from "react-query";
 import { useToast } from "@chakra-ui/react";
 import { AxiosError, AxiosResponse } from "axios";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { secretAtom } from "../user-modal/secret-id";
 import { validate as uuidValidate } from "uuid";
 
@@ -31,7 +31,6 @@ const useCreateReportMutation = () => {
     isClosable: true,
   });
 
-  const router = useRouter();
   let redirectPage: string;
 
   const mutationSuccessHandler = (response: AxiosResponse<responseData>) => {

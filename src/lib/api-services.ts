@@ -25,11 +25,12 @@ const getReports = (
   userId: string,
   anonymous: boolean,
   headers?: AxiosRequestHeaders,
+  isStaff = false,
 ) => {
   return axios
     .get("/api/reports", {
       baseURL: process.env.BASE_URL,
-      params: { userId, anonymous },
+      params: { userId, anonymous, isStaff },
       headers: headers || {},
     })
     .then(({ data }) => data);

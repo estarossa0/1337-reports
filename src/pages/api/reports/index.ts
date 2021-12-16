@@ -5,11 +5,12 @@ import prisma from "../../../lib/prisma/client";
 import * as yup from "yup";
 import { validate as uuidValidate } from "uuid";
 import { authUser } from "../auth/[...nextauth]";
+import staffLogins from "../../../lib/staffLogins";
 
 const schema = yup.object().shape({
   title: yup.string().max(70).min(5).required(),
   anonymous: yup.boolean().required(),
-  staff: yup.string().oneOf(["staff"]).required(),
+  staff: yup.string().oneOf(staffLogins).required(),
   description: yup.object().nullable(),
   reporter: yup.string().nullable(),
 });
@@ -56,8 +57,13 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
     return res.status(401).json({ errorMessage: "Session expired" });
   if (!req.query.userId || !req.query.anonymous)
     return res.status(422).json({ errorMessage: "Request body is not valid" });
+
+  const isStaff = req.query.isStaff === "true";
+
   const reports = await prisma.report.findMany({
-    where: { reporter: req.query.userId.toString() },
+    where: isStaff
+      ? { staff: req.query.userId.toString() }
+      : { reporter: req.query.userId.toString() },
   });
 
   return res.status(200).json(reports);

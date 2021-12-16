@@ -1,10 +1,11 @@
-import { Box, Button, Center, Flex } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
 import { Editor, EditorContent } from "@tiptap/react";
 import { useEditorWithExtensions } from "../../lib/hooks";
 import { Comment as CommentType } from "@prisma/client";
 import { useMutation, useQueryClient } from "react-query";
 import { createComment } from "../../lib/api-services";
 import { ReportWithComments } from "../../lib/prisma/client";
+import Moment from "react-moment";
 
 const CommentBox = ({
   reportId,
@@ -83,6 +84,62 @@ const CommentBox = ({
   );
 };
 
+const CommentItem = ({ comment }: { comment: CommentType }) => {
+  const editor = useEditorWithExtensions(JSON.parse(comment.body), false);
+
+  return (
+    <>
+      <Box
+        w={{ base: "95%", lg: "90%" }}
+        m="2"
+        ml={{ base: "10px", lg: "40px" }}
+        mt="0"
+        border="1px solid #d0d7de"
+        rounded="md"
+        bg="white"
+      >
+        <Box borderTopRadius="4px" h="40px" bg="#dcf4ff" color="white" w="full">
+          <Text size="md" color="#57606a" p="8px">
+            <Text
+              as="span"
+              color="black"
+              textTransform="capitalize"
+              fontWeight="bold"
+            >
+              {comment.author}
+            </Text>
+            <Text as="span">
+              {" "}
+              commented <Moment date={comment.createdAt} fromNow />
+            </Text>
+          </Text>
+        </Box>
+        <Box>
+          <EditorContent editor={editor} />
+        </Box>
+      </Box>
+      <Box
+        w="2px"
+        h="20px"
+        bg="#57606a"
+        position="relative"
+        bottom="5px"
+        left={{ base: "23px", lg: "55px" }}
+      />
+    </>
+  );
+};
+
+const CommentList = ({ comments }: { comments: CommentType[] }) => {
+  return (
+    <Box>
+      {comments.map((comment) => (
+        <CommentItem key={comment.id} comment={comment} />
+      ))}
+    </Box>
+  );
+};
+
 const Comments = ({
   reportId,
   comments,
@@ -96,6 +153,7 @@ const Comments = ({
 
   return (
     <>
+      <CommentList comments={comments} />
       <CommentBox reportId={reportId} editor={editor} />
     </>
   );

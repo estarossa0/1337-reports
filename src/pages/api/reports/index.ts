@@ -64,6 +64,7 @@ const getHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
     where: isStaff
       ? { staff: req.query.userId.toString() }
       : { reporter: req.query.userId.toString() },
+    include: { _count: { select: { comment: true } } },
   });
 
   return res.status(200).json(reports);

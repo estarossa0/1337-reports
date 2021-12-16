@@ -22,7 +22,8 @@ const Title = ({ report }: { report: ReportWithComments }) => (
       <Text fontWeight="semibold" as="span">
         {report.anonymous ? "anonymous" : report.reporter}
       </Text>{" "}
-      created this report <Moment date={report.createdAt} fromNow />
+      created this report <Moment date={report.createdAt} fromNow /> ·{" "}
+      {report.comment.length} comments
     </Text>
   </>
 );

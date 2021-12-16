@@ -1,9 +1,12 @@
 import NextLink from "next/link";
-import { LinkBox, LinkOverlay, Box, Text } from "@chakra-ui/react";
+import { LinkBox, LinkOverlay, Box, Text, Icon, Flex } from "@chakra-ui/react";
 import { Report as ReportType } from "@prisma/client";
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
 import { authUser } from "../../pages/api/auth/[...nextauth]";
+import { FiMessageSquare } from "react-icons/fi";
+
+type ReportWithCount = ReportType & { _count: { comment: number } };
 
 const EmptyReport = () => (
   <Box h="110px">
@@ -51,6 +54,23 @@ const ReportInfo = ({ report }: { report: ReportType }) => {
   );
 };
 
+const CommentCount = ({ report }: { report: ReportWithCount }) => {
+  const {
+    _count: { comment: count },
+  } = report;
+
+  return (
+    <Flex justify="flex-end" w="95%" pos="absolute">
+      <Box>
+        <Icon as={FiMessageSquare} />
+        <Text fontSize="sm" ml="1" as="span">
+          {count}
+        </Text>
+      </Box>
+    </Flex>
+  );
+};
+
 const Report = ({ report }: { report: ReportType }) => {
   return (
     <LinkBox
@@ -71,6 +91,7 @@ const Report = ({ report }: { report: ReportType }) => {
         passHref
       >
         <LinkOverlay>
+          <CommentCount report={report as ReportWithCount} />
           <Title title={report.title} />
           <ReportInfo report={report} />
         </LinkOverlay>

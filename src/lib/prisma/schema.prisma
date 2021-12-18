@@ -14,7 +14,7 @@ model Report {
   anonymous       Boolean
   reporter        String
   title           String
-  description     String?
+  description     String?   @db.LongText
   withDescription Boolean
   staff           String
   createdAt       DateTime  @default(now())
@@ -24,7 +24,7 @@ model Report {
 model Comment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  body      String
+  body      String   @db.LongText
   reportId  Int
   author    String
   byStaff   Boolean

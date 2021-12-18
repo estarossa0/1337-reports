@@ -43,7 +43,7 @@ const useCreateReportMutation = () => {
       description: "Redirecting you the report page",
       title: "Created",
     });
-    setContent({});
+    setContent(null);
     router.push(
       `/reports/${response.data.reportId}/${
         report.anonymous ? `?userId=${secretId}` : ""

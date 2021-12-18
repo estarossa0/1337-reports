@@ -9,7 +9,7 @@ import { atomWithStorage } from "jotai/utils";
 import { useAtom } from "jotai";
 
 const EditorContext = createContext<Editor>(null);
-const editorContent = atomWithStorage("editorContent", {});
+const editorContent = atomWithStorage("editorContent", null);
 
 const EditorProvider: React.FC = ({ children }) => {
   const [content, setEditorContent] = useAtom(editorContent);

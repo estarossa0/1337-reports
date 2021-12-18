@@ -84,10 +84,14 @@ const SignBody = () => {
         <HStack spacing={3}>
           <Tip labels={["home", "reports", "Github repo"]}>
             <Link href="/">
-              <Icon aria-label="Home page" as={BiHomeAlt} />
+              <span>
+                <Icon aria-label="Home page" as={BiHomeAlt} />
+              </span>
             </Link>
             <Link href="/reports" as="/">
-              <Icon as={BiMessageSquareDetail} />
+              <span>
+                <Icon as={BiMessageSquareDetail} />
+              </span>
             </Link>
             <ChakraLink
               href="https://github.com/estarossa0/1337-reports"

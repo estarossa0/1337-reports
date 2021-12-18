@@ -63,7 +63,7 @@ const SignButton = () => {
 
 const Tip = ({ labels, children }) => {
   return children.map((child, index) => (
-    <Tooltip hasArrow aria-label={child.label} label={labels[index]}>
+    <Tooltip key={labels[index]} hasArrow label={labels[index]}>
       <span>{child}</span>
     </Tooltip>
   ));

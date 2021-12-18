@@ -18,6 +18,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useContext } from "react";
 import SecretIdContainer from "./secret-id";
 import { UserContext } from ".";
+import { authUser } from "../../pages/api/auth/[...nextauth]";
 
 const UserIcon = ({ isLoaded }: { isLoaded: boolean }) => {
   const user = useContext(UserContext);
@@ -30,12 +31,12 @@ const UserIcon = ({ isLoaded }: { isLoaded: boolean }) => {
 };
 
 const UserInfo = () => {
-  const user = useContext(UserContext);
+  const user = useContext<authUser>(UserContext);
 
   return (
     <Box textAlign="center">
       <Text>{user ? "Signed as:" : "Not signed"}</Text>
-      {user ? <Text>{user.name}</Text> : null}
+      {user ? <Text>{user.login}</Text> : null}
     </Box>
   );
 };

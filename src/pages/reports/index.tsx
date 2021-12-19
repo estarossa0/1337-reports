@@ -108,9 +108,15 @@ const StaffReports = () => {
 
   return (
     <>
-      {reports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      ))}
+      {reports.data
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        )
+        .map((report) => (
+          <Report key={report.id} report={report} />
+        ))}
     </>
   );
 };

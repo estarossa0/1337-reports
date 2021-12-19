@@ -6,15 +6,15 @@ import {
   Container,
   Spacer,
   useBoolean,
-} from '@chakra-ui/react';
-import Link from 'next/link';
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 const Title = () => {
   const [loading, { on }] = useBoolean();
 
   return (
     <Flex flexDirection="column" alignItems="center" mt="7">
-      <Text whiteSpace="nowrap" fontSize={{ base: '45', lg: '90' }}>
+      <Text whiteSpace="nowrap" fontSize={{ base: "45", lg: "90" }}>
         1337-reports
       </Text>
       <Text
@@ -22,20 +22,20 @@ const Title = () => {
         bg="#333333"
         p="1"
         borderRadius="md"
-        fontSize={{ base: '10', md: '15' }}
+        fontSize={{ base: "10", md: "15" }}
       >
         1337-reports is a platform made so you can report things to a<br />
-        specific staff member or the whole bocal{' '}
+        specific staff member or the whole bocal{" "}
         <Text as="span" fontWeight="bold">
           privately
         </Text>
         .
       </Text>
-      <Link href="/login">
+      <Link href="/submit">
         <Button
           onClick={() => on()}
-          _active={{ transform: 'scale(0.9)' }}
-          _hover={{ transform: 'scale(1.1)' }}
+          _active={{ transform: "scale(0.9)" }}
+          _hover={{ transform: "scale(1.1)" }}
           isLoading={loading}
           mt="12"
           size="md"

@@ -3,11 +3,11 @@ import { FormValues } from "../components/submit/submit-form";
 import { AxiosRequestHeaders } from "axios";
 import { Content } from "@tiptap/core";
 
-const createReport = (value: FormValues) => {
+const createReport = async (value: FormValues) => {
   return axios.post("/api/reports/", value);
 };
 
-const createComment = ({
+const createComment = async ({
   reportId,
   body,
   author,
@@ -23,7 +23,7 @@ const createComment = ({
     .then(({ data }) => data);
 };
 
-const getReports = (
+const getReports = async (
   userId: string,
   anonymous: boolean,
   headers?: AxiosRequestHeaders,
@@ -38,7 +38,7 @@ const getReports = (
     .then(({ data }) => data);
 };
 
-const getReport = (
+const getReport = async (
   reportId: string,
   userId: string,
   headers?: AxiosRequestHeaders,

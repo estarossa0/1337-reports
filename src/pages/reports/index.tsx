@@ -59,23 +59,21 @@ const StudentRports = () => {
       </>
     );
 
-  const ReportsArray: JSX.Element[] = [];
+  const reportsArray: ReportType[] = [];
 
-  if (intraReports.isSuccess)
-    ReportsArray.push(
-      ...intraReports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      )),
-    );
+  if (intraReports.isSuccess) reportsArray.push(...intraReports.data);
 
-  if (secretReports.isSuccess)
-    ReportsArray.push(
-      ...secretReports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      )),
-    );
+  if (secretReports.isSuccess) reportsArray.push(...secretReports.data);
 
-  return <>{ReportsArray}</>;
+  const sortedJsx = reportsArray
+    .sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    )
+    .map((report) => <Report key={report.id} report={report} />);
+
+  return <>{sortedJsx}</>;
 };
 
 const StaffReports = () => {

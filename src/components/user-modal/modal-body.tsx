@@ -88,7 +88,7 @@ const SignBody = () => {
                 <Icon aria-label="Home page" as={BiHomeAlt} />
               </span>
             </Link>
-            <Link href="/reports" as="/">
+            <Link href="/reports">
               <span>
                 <Icon as={BiMessageSquareDetail} />
               </span>

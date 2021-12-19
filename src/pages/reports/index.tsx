@@ -5,7 +5,7 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import { Container, VStack, Skeleton } from "@chakra-ui/react";
+import { Container, VStack, Skeleton, Box } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
 import { AxiosError } from "axios";
@@ -30,6 +30,14 @@ const useUserReports = () => {
     { enabled: !!secretId },
   );
   return { intraReports, secretReports };
+};
+
+const NoReports = () => {
+  return (
+    <Box pos="relative" top="50%">
+      You currently have no reports
+    </Box>
+  );
 };
 
 const StudentRports = () => {
@@ -73,6 +81,7 @@ const StudentRports = () => {
     )
     .map((report) => <Report key={report.id} report={report} />);
 
+  if (reportsArray.length === 0) return <NoReports />;
   return <>{sortedJsx}</>;
 };
 
@@ -105,6 +114,8 @@ const StaffReports = () => {
         ))}
       </>
     );
+
+  if (reports.data.length === 0) return <NoReports />;
 
   return (
     <>

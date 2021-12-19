@@ -123,7 +123,7 @@ const Reports = ({ user }: { user: authUser }) => {
 const Index = () => {
   const session = useLoggedSession();
 
-  if (session.status === "loading") return null;
+  if (session.status !== "authenticated") return null;
 
   return (
     <Container

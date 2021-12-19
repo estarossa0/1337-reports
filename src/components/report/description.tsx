@@ -2,9 +2,13 @@ import { Box, Text } from "@chakra-ui/react";
 import { EditorContent } from "@tiptap/react";
 import { useEditorWithExtensions } from "../../lib/hooks";
 import { Report as ReportType } from "@prisma/client";
+import { decode } from "@msgpack/msgpack";
 
 const ReportDescription = ({ report }: { report: ReportType }) => {
-  const editor = useEditorWithExtensions(JSON.parse(report.description), false);
+  const description = report.withDescription
+    ? decode(Buffer.from(report.description, "base64"))
+    : null;
+  const editor = useEditorWithExtensions(description, false);
 
   return (
     <>

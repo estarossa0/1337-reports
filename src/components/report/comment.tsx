@@ -8,6 +8,7 @@ import { ReportWithComments } from "../../lib/prisma/client";
 import Moment from "react-moment";
 import { useSession } from "next-auth/react";
 import { authUser } from "../../pages/api/auth/[...nextauth]";
+import { decode } from "@msgpack/msgpack";
 
 const CommentBox = ({
   reportId,
@@ -132,7 +133,8 @@ const CommentItemHeader = ({ comment }: { comment: CommentType }) => {
 };
 
 const CommentItem = ({ comment }: { comment: CommentType }) => {
-  const editor = useEditorWithExtensions(JSON.parse(comment.body), false);
+  const body = decode(Buffer.from(comment.body, "base64"));
+  const editor = useEditorWithExtensions(body, false);
 
   return (
     <>

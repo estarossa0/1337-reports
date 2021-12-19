@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import prisma from "../../../lib/prisma/client";
 import * as yup from "yup";
+import { encode } from "@msgpack/msgpack";
 
 const schema = yup.object().shape({
   body: yup.object().required(),
@@ -55,10 +56,18 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   const id = parseInt(reportId);
 
+  const encoded = encode(data.body);
+  const buffered = Buffer.from(
+    encoded.buffer,
+    encoded.byteOffset,
+    encoded.byteLength,
+  );
+  const base64Body = buffered.toString("base64");
+
   const addedComment = await prisma.comment.create({
     data: {
       author: data.author,
-      body: JSON.stringify(data.body),
+      body: base64Body,
       report: { connect: { id: id } },
       byStaff: data.byStaff,
     },

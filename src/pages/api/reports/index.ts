@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { validate as uuidValidate } from "uuid";
 import { authUser } from "../auth/[...nextauth]";
 import staffLogins from "../../../lib/staffLogins";
+import { encode } from "@msgpack/msgpack";
 
 const schema = yup.object().shape({
   title: yup.string().max(70).min(5).required(),
@@ -31,6 +32,17 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
   const user = session.user as authUser;
 
+  let base64Body: string;
+  if (data.description) {
+    const encoded = encode(data.description);
+    const buffered = Buffer.from(
+      encoded.buffer,
+      encoded.byteOffset,
+      encoded.byteLength,
+    );
+    base64Body = buffered.toString("base64");
+  }
+
   const response = await prisma.report
     .create({
       data: {
@@ -38,7 +50,7 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         title: data.title,
         withDescription: !!data.description,
         reporter: data.anonymous ? data.reporter : user.login,
-        description: data.description ? JSON.stringify(data.description) : null,
+        description: data.description ? base64Body : null,
         staff: data.staff,
       },
     })

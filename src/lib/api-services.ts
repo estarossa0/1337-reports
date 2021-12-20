@@ -9,6 +9,7 @@ export interface fetchError {
 
 const createReport = async (value: FormValues) => {
   return fetch(`/api/reports`, {
+    method: "POST",
     body: JSON.stringify(value),
   }).then(async (response) => {
     const responseBody = await response.json();
@@ -33,6 +34,7 @@ const createComment = async ({
   byStaff: boolean;
 }) => {
   return fetch(`/api/reports/${reportId}`, {
+    method: "POST",
     body: JSON.stringify({ body, author, byStaff }),
   }).then(async (response) => {
     const responseBody = await response.json();

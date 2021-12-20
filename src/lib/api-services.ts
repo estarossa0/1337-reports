@@ -2,12 +2,22 @@ import { FormValues } from "../components/submit/submit-form";
 import { Content } from "@tiptap/core";
 import { IncomingHttpHeaders } from "http";
 
+export interface fetchError {
+  code: string;
+  message: string;
+}
+
 const createReport = async (value: FormValues) => {
   return fetch(`/api/reports`, {
     body: JSON.stringify(value),
   }).then(async (response) => {
-    if (!response.ok) throw response;
-    return await response.json();
+    const responseBody = await response.json();
+    if (!response.ok)
+      throw {
+        code: response.status,
+        message: responseBody?.message ? responseBody?.message : undefined,
+      };
+    return responseBody;
   });
 };
 
@@ -25,8 +35,13 @@ const createComment = async ({
   return fetch(`/api/reports/${reportId}`, {
     body: JSON.stringify({ body, author, byStaff }),
   }).then(async (response) => {
-    if (!response.ok) throw response;
-    return await response.json();
+    const responseBody = await response.json();
+    if (!response.ok)
+      throw {
+        code: response.status,
+        message: responseBody?.message ? responseBody?.message : undefined,
+      };
+    return responseBody;
   });
 };
 
@@ -46,8 +61,13 @@ const getReports = async (
       method: "GET",
     },
   ).then(async (response) => {
-    if (!response.ok) throw response;
-    return await response.json();
+    const responseBody = await response.json();
+    if (!response.ok)
+      throw {
+        code: response.status,
+        message: responseBody?.message ? responseBody?.message : undefined,
+      };
+    return responseBody;
   });
 };
 
@@ -63,8 +83,13 @@ const getReport = async (
       method: "GET",
     },
   ).then(async (response) => {
-    if (!response.ok) throw response;
-    return await response.json();
+    const responseBody = await response.json();
+    if (!response.ok)
+      throw {
+        code: response.status,
+        message: responseBody?.message ? responseBody?.message : undefined,
+      };
+    return responseBody;
   });
 };
 

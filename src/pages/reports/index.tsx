@@ -10,19 +10,20 @@ import { useAtomValue } from "jotai/utils";
 import { useLoggedSession } from "../../lib/hooks";
 import router from "next/router";
 import Report, { EmptyReport } from "../../components/reports";
+import { fetchError } from "../../lib/api-services";
 
 const useUserReports = () => {
   const session = useLoggedSession();
   const secretId = useAtomValue(secretAtom);
   const user = session.data?.user as authUser;
 
-  const intraReports = useQuery<ReportType[]>(
+  const intraReports = useQuery<ReportType[], fetchError>(
     ["reports", user?.login],
     () => getReports(user?.login, false),
     { enabled: !!user },
   );
 
-  const secretReports = useQuery<ReportType[]>(
+  const secretReports = useQuery<ReportType[], fetchError>(
     ["reports", secretId],
     () => getReports(secretId, false),
     { enabled: !!secretId },
@@ -86,7 +87,7 @@ const StudentRports = () => {
 const StaffReports = () => {
   const session = useLoggedSession();
   const user = session.data?.user as authUser;
-  const reports = useQuery<ReportType[]>(
+  const reports = useQuery<ReportType[], fetchError>(
     ["reports", user?.login],
     () => getReports(user?.login, false, {}, true),
     { enabled: !!user },

@@ -31,7 +31,7 @@ const getReports = async (
 ) => {
   return axios
     .get("/api/reports", {
-      baseURL: process.env.BASE_URL,
+      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
       params: { userId, anonymous, isStaff },
       headers: headers || {},
     })
@@ -45,7 +45,7 @@ const getReport = async (
 ) => {
   return axios
     .get(`/api/reports/${reportId}`, {
-      baseURL: process.env.BASE_URL,
+      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
       params: { userId },
       headers: headers || {},
     })

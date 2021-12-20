@@ -1,10 +1,14 @@
-import axios from "axios";
 import { FormValues } from "../components/submit/submit-form";
-import { AxiosRequestHeaders } from "axios";
 import { Content } from "@tiptap/core";
+import { IncomingHttpHeaders } from "http";
 
 const createReport = async (value: FormValues) => {
-  return axios.post("/api/reports/", value);
+  return fetch(`/api/reports`, {
+    body: JSON.stringify(value),
+  }).then(async (response) => {
+    if (!response.ok) throw response;
+    return await response.json();
+  });
 };
 
 const createComment = async ({
@@ -18,38 +22,50 @@ const createComment = async ({
   author: string;
   byStaff: boolean;
 }) => {
-  return axios
-    .post(`/api/reports/${reportId}`, { body, author, byStaff })
-    .then(({ data }) => data);
+  return fetch(`/api/reports/${reportId}`, {
+    body: JSON.stringify({ body, author, byStaff }),
+  }).then(async (response) => {
+    if (!response.ok) throw response;
+    return await response.json();
+  });
 };
 
 const getReports = async (
   userId: string,
   anonymous: boolean,
-  headers?: AxiosRequestHeaders,
+  headers?: IncomingHttpHeaders,
   isStaff = false,
 ) => {
-  return axios
-    .get("/api/reports", {
-      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-      params: { userId, anonymous, isStaff },
-      headers: headers || {},
-    })
-    .then(({ data }) => data);
+  return fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports?` +
+      `userId=${userId}&` +
+      `anonymous=${anonymous}&` +
+      `isStaff=${isStaff}`,
+    {
+      headers: headers ? { cookie: headers.cookie } : {},
+      method: "GET",
+    },
+  ).then(async (response) => {
+    if (!response.ok) throw response;
+    return await response.json();
+  });
 };
 
 const getReport = async (
   reportId: string,
   userId: string,
-  headers?: AxiosRequestHeaders,
+  headers?: IncomingHttpHeaders,
 ) => {
-  return axios
-    .get(`/api/reports/${reportId}`, {
-      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
-      params: { userId },
-      headers: headers || {},
-    })
-    .then(({ data }) => data);
+  return fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reports/${reportId}?userId=${userId}`,
+    {
+      headers: headers ? { cookie: headers.cookie } : {},
+      method: "GET",
+    },
+  ).then(async (response) => {
+    if (!response.ok) throw response;
+    return await response.json();
+  });
 };
 
 export { createReport, getReports, getReport, createComment };

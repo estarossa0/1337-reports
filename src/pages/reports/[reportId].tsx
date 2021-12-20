@@ -1,4 +1,3 @@
-import { AxiosRequestHeaders } from "axios";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { getReport } from "../../lib/api-services";
@@ -51,17 +50,15 @@ const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
   const user = session.user as authUser;
   const reportId = query.reportId.toString();
 
-  let report = await getReport(
-    reportId,
-    user.login,
-    req.headers as AxiosRequestHeaders,
-  ).catch(() => null);
+  let report = await getReport(reportId, user.login, req.headers).catch(
+    () => null,
+  );
 
   if (!report && query.userId && uuidValidate(query.userId))
     report = await getReport(
       reportId,
       query.userId.toString(),
-      req.headers as AxiosRequestHeaders,
+      req.headers,
     ).catch(() => null);
 
   return {

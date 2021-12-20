@@ -1,4 +1,3 @@
-import { AxiosRequestHeaders } from "axios";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
@@ -8,7 +7,6 @@ import { Report as ReportType } from "@prisma/client";
 import { Container, VStack, Skeleton, Box } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
-import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks";
 import router from "next/router";
 import Report, { EmptyReport } from "../../components/reports";
@@ -18,13 +16,13 @@ const useUserReports = () => {
   const secretId = useAtomValue(secretAtom);
   const user = session.data?.user as authUser;
 
-  const intraReports = useQuery<ReportType[], AxiosError>(
+  const intraReports = useQuery<ReportType[]>(
     ["reports", user?.login],
     () => getReports(user?.login, false),
     { enabled: !!user },
   );
 
-  const secretReports = useQuery<ReportType[], AxiosError>(
+  const secretReports = useQuery<ReportType[]>(
     ["reports", secretId],
     () => getReports(secretId, false),
     { enabled: !!secretId },
@@ -88,7 +86,7 @@ const StudentRports = () => {
 const StaffReports = () => {
   const session = useLoggedSession();
   const user = session.data?.user as authUser;
-  const reports = useQuery<ReportType[], AxiosError>(
+  const reports = useQuery<ReportType[]>(
     ["reports", user?.login],
     () => getReports(user?.login, false, {}, true),
     { enabled: !!user },
@@ -169,12 +167,12 @@ const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
   const user = session.user as authUser;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(["reports", user.login], () =>
-    getReports(user.login, false, req.headers as AxiosRequestHeaders),
+    getReports(user.login, false, req.headers),
   );
   const userId = query.userId;
   if (userId && !(userId instanceof Array))
     await queryClient.prefetchQuery(["reports", userId], () =>
-      getReports(userId, true, req.headers as AxiosRequestHeaders),
+      getReports(userId, true, req.headers),
     );
 
   return {

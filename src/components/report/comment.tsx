@@ -1,4 +1,11 @@
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Link as ChakraLink,
+  Text,
+} from "@chakra-ui/react";
 import { Editor, EditorContent } from "@tiptap/react";
 import { useEditorWithExtensions } from "../../lib/hooks";
 import { Comment as CommentType } from "@prisma/client";
@@ -121,7 +128,16 @@ const CommentItemHeader = ({ comment }: { comment: CommentType }) => {
           textTransform="capitalize"
           fontWeight="bold"
         >
-          {comment.author}
+          {comment.author === "anonymous" ? (
+            comment.author
+          ) : (
+            <ChakraLink
+              href={`https://profile.intra.42.fr/users/${comment.author}`}
+              isExternal
+            >
+              {comment.author}
+            </ChakraLink>
+          )}
         </Text>
         <Text as="span">
           {" "}

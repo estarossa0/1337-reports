@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "studio": "prisma studio",
+    "dbpush": "prisma db push"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.4.2",
@@ -19,7 +21,6 @@
     "@tiptap/extension-task-list": "^2.0.0-beta.23",
     "@tiptap/react": "^2.0.0-beta.93",
     "@tiptap/starter-kit": "^2.0.0-beta.140",
-    "axios": "^0.24.0",
     "formik": "^2.2.9",
     "framer-motion": "^4.0.3",
     "jotai": "^1.4.4",

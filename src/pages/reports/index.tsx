@@ -1,35 +1,42 @@
-import { AxiosRequestHeaders } from "axios";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { getReports } from "../../lib/api-services";
 import { authUser } from "../api/auth/[...nextauth]";
 import { Report as ReportType } from "@prisma/client";
-import { Container, VStack, Skeleton } from "@chakra-ui/react";
+import { Container, VStack, Skeleton, Box } from "@chakra-ui/react";
 import { secretAtom } from "../../components/user-modal/secret-id";
 import { useAtomValue } from "jotai/utils";
-import { AxiosError } from "axios";
 import { useLoggedSession } from "../../lib/hooks";
 import router from "next/router";
 import Report, { EmptyReport } from "../../components/reports";
+import { fetchError } from "../../lib/api-services";
 
 const useUserReports = () => {
   const session = useLoggedSession();
   const secretId = useAtomValue(secretAtom);
   const user = session.data?.user as authUser;
 
-  const intraReports = useQuery<ReportType[], AxiosError>(
+  const intraReports = useQuery<ReportType[], fetchError>(
     ["reports", user?.login],
     () => getReports(user?.login, false),
     { enabled: !!user },
   );
 
-  const secretReports = useQuery<ReportType[], AxiosError>(
+  const secretReports = useQuery<ReportType[], fetchError>(
     ["reports", secretId],
     () => getReports(secretId, false),
     { enabled: !!secretId },
   );
   return { intraReports, secretReports };
+};
+
+const NoReports = () => {
+  return (
+    <Box pos="relative" top="50%">
+      You currently have no reports
+    </Box>
+  );
 };
 
 const StudentRports = () => {
@@ -59,29 +66,28 @@ const StudentRports = () => {
       </>
     );
 
-  const ReportsArray: JSX.Element[] = [];
+  const reportsArray: ReportType[] = [];
 
-  if (intraReports.isSuccess)
-    ReportsArray.push(
-      ...intraReports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      )),
-    );
+  if (intraReports.isSuccess) reportsArray.push(...intraReports.data);
 
-  if (secretReports.isSuccess)
-    ReportsArray.push(
-      ...secretReports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      )),
-    );
+  if (secretReports.isSuccess) reportsArray.push(...secretReports.data);
 
-  return <>{ReportsArray}</>;
+  const sortedJsx = reportsArray
+    .sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() -
+        new Date(first.createdAt).getTime(),
+    )
+    .map((report) => <Report key={report.id} report={report} />);
+
+  if (reportsArray.length === 0) return <NoReports />;
+  return <>{sortedJsx}</>;
 };
 
 const StaffReports = () => {
   const session = useLoggedSession();
   const user = session.data?.user as authUser;
-  const reports = useQuery<ReportType[], AxiosError>(
+  const reports = useQuery<ReportType[], fetchError>(
     ["reports", user?.login],
     () => getReports(user?.login, false, {}, true),
     { enabled: !!user },
@@ -108,11 +114,19 @@ const StaffReports = () => {
       </>
     );
 
+  if (reports.data.length === 0) return <NoReports />;
+
   return (
     <>
-      {reports.data.map((report) => (
-        <Report key={report.id} report={report} />
-      ))}
+      {reports.data
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        )
+        .map((report) => (
+          <Report key={report.id} report={report} />
+        ))}
     </>
   );
 };
@@ -125,7 +139,7 @@ const Reports = ({ user }: { user: authUser }) => {
 const Index = () => {
   const session = useLoggedSession();
 
-  if (session.status === "loading") return null;
+  if (session.status !== "authenticated") return null;
 
   return (
     <Container
@@ -154,12 +168,12 @@ const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
   const user = session.user as authUser;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(["reports", user.login], () =>
-    getReports(user.login, false, req.headers as AxiosRequestHeaders),
+    getReports(user.login, false, req.headers),
   );
   const userId = query.userId;
   if (userId && !(userId instanceof Array))
     await queryClient.prefetchQuery(["reports", userId], () =>
-      getReports(userId, true, req.headers as AxiosRequestHeaders),
+      getReports(userId, true, req.headers),
     );
 
   return {

@@ -14,6 +14,7 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import ErrorBox from "../submit/submit-error";
 import { UserContext } from ".";
+import { authUser } from "../../pages/api/auth/[...nextauth]";
 
 const secretAtom = atomWithStorage("secretId", null);
 
@@ -165,10 +166,10 @@ const SecretId = () => {
   } else return <SecretIdFound />;
 };
 const SecretIdContainer = () => {
-  const user = useContext(UserContext);
+  const user = useContext<authUser>(UserContext);
   const [secretId] = useAtom(secretAtom);
 
-  if (!user) return null;
+  if (!user || user.isStaff) return null;
 
   return (
     <Center

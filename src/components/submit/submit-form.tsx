@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import { useContext } from "react";
 import * as Yup from "yup";
 import { EditorContext } from "./editor-provider";
-import { createReport, fetchError } from "../../lib/api-services";
+import { createReport } from "../../lib/api-services";
 import { editorContent } from "./editor-provider";
 import { useAtom } from "jotai";
 import { useMutation } from "react-query";
@@ -11,6 +11,7 @@ import { useToast } from "@chakra-ui/react";
 import router from "next/router";
 import { secretAtom } from "../user-modal/secret-id";
 import { validate as uuidValidate } from "uuid";
+import { AxiosError, AxiosResponse } from "axios";
 
 export interface FormValues {
   title: string;
@@ -34,7 +35,7 @@ const useCreateReportMutation = () => {
   let redirectPage: string;
 
   const mutationSuccessHandler = (
-    response: responseData,
+    response: AxiosResponse<responseData>,
     report: FormValues,
   ) => {
     toast({
@@ -44,21 +45,21 @@ const useCreateReportMutation = () => {
     });
     setContent(null);
     router.push(
-      `/reports/${response.reportId}/${
+      `/reports/${response.data.reportId}/${
         report.anonymous ? `?userId=${secretId}` : ""
       }`,
     );
   };
 
-  const mutationErrorHandler = (error: fetchError) => {
-    if (error) {
-      if (error.code === "401") redirectPage = "/login";
-      if (error.code === "422" || error.code === "500")
-        redirectPage = `/error?error=${error.message}`;
+  const mutationErrorHandler = (error: AxiosError) => {
+    if (error.response) {
+      if (error.response.status === 401) redirectPage = "/login";
+      if (error.response.status === 422 || error.response.status === 500)
+        redirectPage = `/error?error=${error.response.data.errorMessage}`;
     }
     toast({
       status: "error",
-      description: error.message,
+      description: error.response.data.errorMessage,
       title: "Failed",
     });
     router.push(redirectPage);

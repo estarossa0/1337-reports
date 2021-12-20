@@ -16,7 +16,9 @@ const createReport = async (value: FormValues) => {
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });
@@ -41,7 +43,9 @@ const createComment = async ({
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });
@@ -67,7 +71,9 @@ const getReports = async (
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });
@@ -89,7 +95,9 @@ const getReport = async (
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });

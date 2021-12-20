@@ -50,11 +50,7 @@ const Title = () => {
 };
 
 const Example = () => {
-  return (
-    <Box w="550px" h="600px" bgColor="red">
-      <Text>EXAMPLE</Text>
-    </Box>
-  );
+  return null;
 };
 
 const Index = () => (

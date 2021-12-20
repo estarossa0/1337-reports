@@ -1,6 +1,7 @@
 import { FormValues } from "../components/submit/submit-form";
 import { Content } from "@tiptap/core";
 import { IncomingHttpHeaders } from "http";
+import axios from "axios";
 
 export interface fetchError {
   code: string;
@@ -8,17 +9,7 @@ export interface fetchError {
 }
 
 const createReport = async (value: FormValues) => {
-  return fetch(`/api/reports`, {
-    body: JSON.stringify(value),
-  }).then(async (response) => {
-    const responseBody = await response.json();
-    if (!response.ok)
-      throw {
-        code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
-      };
-    return responseBody;
-  });
+  return axios.post("/api/reports/", value);
 };
 
 const createComment = async ({
@@ -32,17 +23,9 @@ const createComment = async ({
   author: string;
   byStaff: boolean;
 }) => {
-  return fetch(`/api/reports/${reportId}`, {
-    body: JSON.stringify({ body, author, byStaff }),
-  }).then(async (response) => {
-    const responseBody = await response.json();
-    if (!response.ok)
-      throw {
-        code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
-      };
-    return responseBody;
-  });
+  return axios
+    .post(`/api/reports/${reportId}`, { body, author, byStaff })
+    .then(({ data }) => data);
 };
 
 const getReports = async (
@@ -65,7 +48,9 @@ const getReports = async (
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });
@@ -87,7 +72,9 @@ const getReport = async (
     if (!response.ok)
       throw {
         code: response.status,
-        message: responseBody?.message ? responseBody?.message : undefined,
+        message: responseBody?.errorMessage
+          ? responseBody?.errorMessage
+          : undefined,
       };
     return responseBody;
   });

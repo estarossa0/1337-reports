@@ -15,10 +15,10 @@ import { GetServerSideProps } from "next";
 
 const Description = () => (
   <Text>
-    1337-reports is made only for 1337 students, therefor you need to sign in
+    1337-reports is made only for 1337 students, therefore you need to sign in
     with your 42 intra account. We guarantee to you that we won't use your data
-    for anything else other than verify you're one of us, and we won't link any
-    report you make with your intra, unless you say so.
+    for anything else other than verifying you're one of us, and we won't link
+    any report you make with your intra, unless you say so.
     <br />
     You can always check yourself with the source code here{" "}
     <ChakraLink href="https://github.com/estarossa0/1337-reports" isExternal>

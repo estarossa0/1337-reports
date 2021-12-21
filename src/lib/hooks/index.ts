@@ -19,6 +19,7 @@ const useEditorWithExtensions = (
     extensions: [
       StarterKit,
       Placeholder.configure({
+        showOnlyWhenEditable: false,
         placeholder: placeHolder || "Description (optional)",
       }),
       Highlight,

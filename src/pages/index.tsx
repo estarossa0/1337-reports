@@ -8,6 +8,7 @@ import {
   useBoolean,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import Example from "../components/example";
 
 const Title = () => {
   const [loading, { on }] = useBoolean();
@@ -47,10 +48,6 @@ const Title = () => {
       </Link>
     </Flex>
   );
-};
-
-const Example = () => {
-  return null;
 };
 
 const Index = () => (

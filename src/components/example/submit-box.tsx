@@ -1,10 +1,10 @@
-import { useEditorWithExtensions } from "../lib/hooks";
+import { useEditorWithExtensions } from "../../lib/hooks";
 import { EditorContent } from "@tiptap/react";
-import { Center, Input, Box, useBoolean } from "@chakra-ui/react";
+import { Input, Box, useBoolean } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-import { atom, useAtom } from "jotai";
-
-const stepAtom = atom(1);
+import { useAtom } from "jotai";
+import { MotionCenter } from "../motion-components";
+import { stepAtom } from ".";
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -94,6 +94,7 @@ const Description = () => {
       await sleep(500);
       editor.commands.setTextSelection({ from: 250, to: 260 });
       editor.commands.setMark("highlight");
+      await sleep(500);
       setStep(3);
     };
     main();
@@ -116,20 +117,35 @@ const Description = () => {
   );
 };
 
-const Example = () => {
+const SubmitBox = () => {
+  const [step] = useAtom(stepAtom);
+  const variants = {
+    open: {
+      x: 0,
+      opacity: 1,
+    },
+    closed: {
+      x: -200,
+      opacity: 0,
+      transition: { duration: 0.3 },
+    },
+  };
+
   return (
-    <Center
+    <MotionCenter
+      variants={variants}
+      animate={step < 3 ? "open" : "closed"}
       flexDirection="column"
-      w="40%"
       rounded="md"
+      w="80%"
       border="3px solid black"
-      h="300px"
+      h="80%"
       bg="white"
     >
       <Title />
       <Description />
-    </Center>
+    </MotionCenter>
   );
 };
 
-export { Example as default };
+export { SubmitBox as default };

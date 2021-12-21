@@ -5,10 +5,7 @@ import { useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { MotionCenter } from "../motion-components";
 import { stepAtom } from ".";
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import sleep from "../../lib/sleep";
 
 const Title = () => {
   const ref = useRef<HTMLInputElement>(null);

@@ -2,10 +2,9 @@ import { useEditorWithExtensions } from "../lib/hooks";
 import { EditorContent } from "@tiptap/react";
 import { Center, Input, Box, useBoolean } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
-import { atom } from "jotai";
-import { useUpdateAtom } from "jotai/utils";
+import { atom, useAtom } from "jotai";
 
-const stepAtom = atom(0);
+const stepAtom = atom(1);
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -13,10 +12,11 @@ function sleep(ms: number): Promise<void> {
 
 const Title = () => {
   const ref = useRef<HTMLInputElement>(null);
-  const setStep = useUpdateAtom(stepAtom);
+  const [step, setStep] = useAtom(stepAtom);
   useEffect(() => {
+    if (step !== 1) return null;
     const main = async () => {
-      await sleep(700);
+      await sleep(400);
       ref.current.focus();
       const text = "Loud playgrounds";
       for (let index = 0; index < text.length + 1; index++) {
@@ -24,10 +24,10 @@ const Title = () => {
         await sleep(100);
       }
       ref.current.blur();
-      setStep(1);
+      setStep(2);
     };
     main();
-  }, [setStep]);
+  }, [step, setStep]);
   return (
     <Box h="10%" w="98%" m="2">
       <Input
@@ -48,8 +48,10 @@ const Title = () => {
 const Description = () => {
   const editor = useEditorWithExtensions("", false);
   const [started, { on }] = useBoolean(false);
+  const [step, setStep] = useAtom(stepAtom);
+
   useEffect(() => {
-    if (!editor || started) return null;
+    if (!editor || started || step !== 2) return null;
     const main = async () => {
       const insertLine = async (line: string) => {
         for (let index = 0; index < line.length + 1; index++) {
@@ -92,9 +94,10 @@ const Description = () => {
       await sleep(500);
       editor.commands.setTextSelection({ from: 250, to: 260 });
       editor.commands.setMark("highlight");
+      setStep(3);
     };
     main();
-  }, [editor, on, started]);
+  }, [editor, on, started, step, setStep]);
   if (!editor) return null;
 
   return (

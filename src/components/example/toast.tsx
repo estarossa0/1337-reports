@@ -44,12 +44,13 @@ const Toast = () => {
       initial="closed"
       animate={controls}
       p="2"
-      mt="200px"
+      mt={{ base: "150px", md: "200px" }}
       pos="absolute"
       bg="green.500"
-      w="220px"
-      h="70px"
+      w={{ base: "150px", md: "220px" }}
+      h={{ base: "50px", md: "70px" }}
       rounded="md"
+      fontSize={{ base: "13px", md: "md" }}
     >
       <Flex>
         <Icon

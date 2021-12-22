@@ -9,7 +9,10 @@ const stepAtom = atom(1);
 
 const Example = () => {
   return (
-    <Center w="600px" h="400px">
+    <Center
+      w={{ base: "full", sm: "340px", md: "600px" }}
+      h={{ base: "300px", md: "400px" }}
+    >
       <SubmitBox />
       <SubmitControl />
       <Toast />

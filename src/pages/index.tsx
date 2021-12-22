@@ -5,6 +5,7 @@ import {
   Text,
   Container,
   Spacer,
+  Stack,
   useBoolean,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -51,13 +52,13 @@ const Title = () => {
 };
 
 const Index = () => (
-  <Box overflowY="hidden" as="main" w="100vw" h="100vh">
+  <Box overflow="hidden" as="main" w="100vw" h="100vh">
     <Container top="15%" pos="relative" maxW="container.xl">
-      <Flex>
+      <Stack align="center" direction={{ base: "column", xl: "row" }}>
         <Title />
         <Spacer />
         <Example />
-      </Flex>
+      </Stack>
     </Container>
   </Box>
 );

@@ -26,19 +26,22 @@ const Title = () => {
     main();
   }, [step, setStep]);
   return (
-    <Box h="10%" w="98%" m="2">
-      <Input
-        isReadOnly
-        _focus={{
-          border: "1px solid #3182ce",
-          boxShadow: "0 0 0 1px #3182ce !important",
-        }}
-        ref={ref}
-        borderColor="#ABABAB"
-        placeholder="Title"
-        name="title"
-      />
-    </Box>
+    <Input
+      isReadOnly
+      _focus={{
+        border: "1px solid #3182ce",
+        boxShadow: "0 0 0 1px #3182ce !important",
+      }}
+      w="98%"
+      m="1"
+      mb="0"
+      h={{ base: "28px", md: "42px" }}
+      fontSize={{ base: "xs", md: "md" }}
+      ref={ref}
+      borderColor="#ABABAB"
+      placeholder="Title"
+      name="title"
+    />
   );
 };
 
@@ -100,14 +103,14 @@ const Description = () => {
 
   return (
     <Box
+      m="1"
       onClick={() => editor.commands.focus()}
       borderRadius="md"
-      h="80%"
+      minH={{ base: "170px", md: "240px" }}
       w="98%"
-      m="2"
       border="1px solid #ABABAB"
       className="EditorContainer"
-      fontSize="15px"
+      fontSize={{ base: "10px", md: "15px" }}
     >
       {editor ? <EditorContent editor={editor} /> : <Box />}
     </Box>
@@ -134,9 +137,9 @@ const SubmitBox = () => {
       animate={step < 3 ? "open" : "closed"}
       flexDirection="column"
       rounded="md"
-      w="80%"
+      w={{ base: "90%", md: "80%" }}
       border="3px solid black"
-      h="80%"
+      minH={{ base: "210px", md: "300px" }}
       bg="white"
     >
       <Title />

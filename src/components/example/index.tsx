@@ -3,6 +3,7 @@ import { atom } from "jotai";
 import SubmitBox from "./submit-box";
 import SubmitControl from "./submit-control";
 import Toast from "./toast";
+import Report from "./report";
 
 const stepAtom = atom(1);
 
@@ -12,6 +13,7 @@ const Example = () => {
       <SubmitBox />
       <SubmitControl />
       <Toast />
+      <Report />
     </Center>
   );
 };

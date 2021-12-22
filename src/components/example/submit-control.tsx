@@ -145,17 +145,19 @@ const SubmitControl = () => {
       opacity: 1,
       transition: { delay: 0.5, duration: 0.3 },
     },
-    closed: {
-      x: 200,
+    closed: (step) => ({
+      x: step <= 3 ? 200 : 0,
+      y: step === 5 ? 200 : 0,
       opacity: 0,
       transition: { duration: 0.3 },
-    },
+    }),
   };
   return (
     <MotionBox
       initial={false}
       variants={variants}
-      animate={globalStep >= 3 ? "open" : "closed"}
+      custom={globalStep}
+      animate={globalStep >= 3 && globalStep < 5 ? "open" : "closed"}
       pos="absolute"
       w="300px"
       h="fit-content"

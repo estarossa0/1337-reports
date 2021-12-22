@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   useBoolean,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { atom, useAtom } from "jotai";
 import { useAtomValue, useUpdateAtom } from "jotai/utils";
@@ -37,7 +38,7 @@ const StaffSelect = () => {
   return (
     <Box w="full">
       <Flex w="full" justify="space-between" align="center">
-        <Text as="label" w="fit-content">
+        <Text fontSize={{ base: "14px", md: "md" }} as="label" w="fit-content">
           Send to:
         </Text>
         <Select
@@ -46,7 +47,8 @@ const StaffSelect = () => {
           as={Select}
           placeholder="Select staff"
           variant="filled"
-          size="md"
+          h={{ base: "35px", md: "40px" }}
+          w={{ base: "90px", md: "135px" }}
           display="inline-block"
           width="fit-content"
           name="staff"
@@ -66,6 +68,7 @@ const StaffSelect = () => {
 const AnonymousSwitch = () => {
   const [isChecked, { on }] = useBoolean();
   const [localStep, setLocalStep] = useAtom(localStepAtom);
+  const breakpoint = useBreakpointValue({ base: "base", md: "md" });
 
   useEffect(() => {
     if (localStep !== 2) return;
@@ -80,7 +83,7 @@ const AnonymousSwitch = () => {
   return (
     <Box w="full">
       <Flex w="full" justify="space-between" align="center">
-        <Text as="label" w="fit-content">
+        <Text fontSize={{ base: "14px", md: "md" }} as="label" w="fit-content">
           Anonymous ?
         </Text>
         <Switch
@@ -89,12 +92,16 @@ const AnonymousSwitch = () => {
           isChecked={isChecked}
           type="Checkbox"
           colorScheme="customBlack"
-          size="lg"
+          size={breakpoint === "base" ? "md" : "lg"}
           name="anonymous"
         />
       </Flex>
       {isChecked ? null : (
-        <Text position="absolute" fontSize="12px" color="yellow.600">
+        <Text
+          position="absolute"
+          fontSize={{ base: "9px", md: "14px" }}
+          color="yellow.600"
+        >
           ⚠Your identity will be added
         </Text>
       )}
@@ -119,6 +126,9 @@ const SubmitButton = () => {
   return (
     <Flex justify="flex-end" w="full">
       <Button
+        fontSize={{ base: "13px", md: "md" }}
+        h={{ base: "33px", md: "45px" }}
+        w={{ base: "60px", md: "90px" }}
         isLoading={active}
         transform={active ? "scale(0.9)" : undefined}
         bgColor="black"
@@ -159,14 +169,14 @@ const SubmitControl = () => {
       custom={globalStep}
       animate={globalStep >= 3 && globalStep < 5 ? "open" : "closed"}
       pos="absolute"
-      w="300px"
-      h="fit-content"
-      py="10px"
+      w={{ base: "220px", md: "300px" }}
+      h={{ base: "190px", md: "255px" }}
+      py={{ base: "3px", md: "10px" }}
       border="3px solid #ABABAB"
       borderRadius="md"
       bg="white"
     >
-      <VStack spacing="10" m="5">
+      <VStack spacing={{ base: "7", md: "10" }} m={{ base: "3.5", md: "5" }}>
         <StaffSelect />
         <AnonymousSwitch />
         <SubmitButton />

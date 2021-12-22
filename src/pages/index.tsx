@@ -51,7 +51,7 @@ const Title = () => {
 };
 
 const Index = () => (
-  <Box overflow="hidden" as="main" w="100vw" h="100vh">
+  <Box overflowY="hidden" as="main" w="100vw" h="100vh">
     <Container top="15%" pos="relative" maxW="container.xl">
       <Flex>
         <Title />

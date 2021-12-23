@@ -53,7 +53,11 @@ const Title = () => {
 
 const Index = () => (
   <Box overflow="hidden" as="main" w="100vw" h="100vh">
-    <Container top="15%" pos="relative" maxW="container.xl">
+    <Container
+      top={{ base: "2%", md: "15%" }}
+      pos="relative"
+      maxW="container.xl"
+    >
       <Stack align="center" direction={{ base: "column", xl: "row" }}>
         <Title />
         <Spacer />

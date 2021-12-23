@@ -5,9 +5,11 @@ import {
   Text,
   Container,
   Spacer,
+  Stack,
   useBoolean,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import Example from "../components/example";
 
 const Title = () => {
   const [loading, { on }] = useBoolean();
@@ -37,7 +39,8 @@ const Title = () => {
           _active={{ transform: "scale(0.9)" }}
           _hover={{ transform: "scale(1.1)" }}
           isLoading={loading}
-          mt="12"
+          mt={{ base: "5", md: "12" }}
+          mb={{ base: "5", md: "0" }}
           size="md"
           color="white"
           bg="gray.600"
@@ -49,18 +52,18 @@ const Title = () => {
   );
 };
 
-const Example = () => {
-  return null;
-};
-
 const Index = () => (
-  <Box as="main" w="100vw" h="100vh">
-    <Container top="15%" pos="relative" maxW="container.xl">
-      <Flex>
+  <Box overflow="hidden" as="main" w="100vw" h="100vh">
+    <Container
+      top={{ base: "2%", md: "15%" }}
+      pos="relative"
+      maxW="container.xl"
+    >
+      <Stack align="center" direction={{ base: "column", xl: "row" }}>
         <Title />
         <Spacer />
         <Example />
-      </Flex>
+      </Stack>
     </Container>
   </Box>
 );

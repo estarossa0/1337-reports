@@ -56,7 +56,7 @@ const Description = () => {
       const insertLine = async (line: string) => {
         for (let index = 0; index < line.length + 1; index++) {
           editor.commands.insertContent(line[index]);
-          await sleep(10);
+          await sleep(1);
         }
       };
       on();

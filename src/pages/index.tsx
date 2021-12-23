@@ -39,7 +39,8 @@ const Title = () => {
           _active={{ transform: "scale(0.9)" }}
           _hover={{ transform: "scale(1.1)" }}
           isLoading={loading}
-          mt="12"
+          mt={{ base: "5", md: "12" }}
+          mb={{ base: "5", md: "0" }}
           size="md"
           color="white"
           bg="gray.600"

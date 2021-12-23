@@ -3,7 +3,7 @@ import { EditorContent } from "@tiptap/react";
 import { Content } from "@tiptap/core";
 import { useEditorWithExtensions } from "../../lib/hooks";
 import Moment from "react-moment";
-import { MotionContainer } from "../motion-components";
+import { MotionBox } from "../motion-components";
 import { stepAtom } from ".";
 import { useAtomValue } from "jotai/utils";
 
@@ -130,7 +130,7 @@ const body: Content = {
 
 const Title = () => (
   <>
-    <Heading ml="10px" fontSize={{ base: "md", md: "lg", lg: "x-large" }}>
+    <Heading ml="10px" fontSize={{ base: "sm", md: "lg", lg: "x-large" }}>
       Loud playgrounds
       <Heading
         mb="10px"
@@ -142,7 +142,12 @@ const Title = () => (
         #1
       </Heading>
     </Heading>
-    <Text ml="20px" mb="5px" color="#57606a" fontSize="xs">
+    <Text
+      ml="20px"
+      mb="5px"
+      color="#57606a"
+      fontSize={{ base: "9px", md: "xs" }}
+    >
       <Text fontWeight="semibold" as="span">
         anonymous
       </Text>{" "}
@@ -157,16 +162,27 @@ const Description = () => {
   return (
     <Box
       m="2"
-      ml="40px"
+      ml={{ base: "10px", md: "40px" }}
       bg="white"
       border="1px solid black"
       borderRadius="md"
       minH="80px"
-      w="80%"
-      fontSize="sm"
+      w="100%"
+      fontSize={{ base: "11px", md: "sm" }}
     >
-      <Box borderTopRadius="4px" h="40px" bg="black" color="white" w="full">
-        <Text p="8px">Description:</Text>
+      <Box
+        borderTopRadius="4px"
+        h={{ base: "25px", md: "40px" }}
+        bg="black"
+        color="white"
+        w="100%"
+      >
+        <Text
+          fontSize={{ base: "12px", md: "sm" }}
+          p={{ base: "4px", md: "8px" }}
+        >
+          Description:
+        </Text>
       </Box>
 
       {editor ? <EditorContent editor={editor} /> : <Box />}
@@ -196,18 +212,18 @@ const Report = () => {
     },
   };
   return (
-    <MotionContainer
+    <MotionBox
       initial={false}
       variants={variants}
       animate={globalStep === 5 ? "open" : "closed"}
-      maxW="container.sm"
+      w={{ base: "full", sm: "330px", md: "550px" }}
       pos="absolute"
       rounded="lg"
     >
       <Title />
       <Box h="2px" w="90%" bg="#CCCCCC" />
       <Description />{" "}
-    </MotionContainer>
+    </MotionBox>
   );
 };
 
